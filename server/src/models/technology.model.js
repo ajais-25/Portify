@@ -32,6 +32,4 @@ const technologySchema = new Schema(
     { timestamps: true }
 );
 
-const Technology = mongoose.model("Skill", technologySchema);
-
-export default Technology;
+export const Technology = mongoose.model("Technology", technologySchema);

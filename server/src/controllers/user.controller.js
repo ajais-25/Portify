@@ -1,12 +1,20 @@
 import { User } from "../models/user.model.js";
 
 const register = async (req, res) => {
-    const { name, username, email, password } = req.body;
+    const { name, username, email, password, role } = req.body;
 
     if (!name || !username || !email || !password) {
         return res.status(400).json({
             success: false,
             message: "All fields are required",
+        });
+    }
+
+    // Validate role if provided
+    if (role && !["user", "admin"].includes(role)) {
+        return res.status(400).json({
+            success: false,
+            message: "Role must be either 'user' or 'admin'",
         });
     }
 
@@ -26,12 +34,12 @@ const register = async (req, res) => {
                 .status(400)
                 .json({ success: false, message: "Username not available" });
         }
-
         const user = await User.create({
             name,
             email,
             username,
             password,
+            ...(role && { role }), // Only include role if provided
         });
 
         if (!user) {
@@ -46,7 +54,6 @@ const register = async (req, res) => {
             httpOnly: true,
             secure: true,
         };
-
         return res
             .status(200)
             .cookie("token", token, options)
@@ -57,6 +64,7 @@ const register = async (req, res) => {
                     name: user.name,
                     email: user.email,
                     username: user.username,
+                    role: user.role,
                 },
                 message: "User registered successfully",
             });

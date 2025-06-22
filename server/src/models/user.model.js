@@ -28,6 +28,11 @@ const userSchema = new Schema(
             required: true,
             minlength: 6,
         },
+        role: {
+            type: String,
+            enum: ["user", "admin"],
+            default: "user",
+        },
     },
     { timestamps: true }
 );
@@ -52,10 +57,11 @@ userSchema.methods.generateAuthToken = function () {
             name: this.name,
             email: this.email,
             username: this.username,
+            role: this.role,
         },
         process.env.JWT_SECRET,
         {
-            expiresIn: process.env.JWT_EXPIRY || "7d",
+            expiresIn: process.env.JWT_EXPIRY,
         }
     );
 };

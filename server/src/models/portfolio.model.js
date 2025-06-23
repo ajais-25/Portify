@@ -41,17 +41,17 @@ const portfolioSchema = new Schema(
         socialLinks: {
             github: {
                 type: String,
-                required: true,
+                required: false,
                 trim: true,
             },
             linkedin: {
                 type: String,
-                required: true,
+                required: false,
                 trim: true,
             },
             twitter: {
                 type: String,
-                required: true,
+                required: false,
                 trim: true,
             },
             website: {

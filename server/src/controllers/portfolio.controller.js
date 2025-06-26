@@ -1,4 +1,3 @@
-import { Portfolio } from "../models/portfolio.model.js";
 import { Technology } from "../models/technology.model.js";
 
 const createPortfolio = async (req, res) => {
@@ -15,7 +14,6 @@ const createPortfolio = async (req, res) => {
             skills,
             education,
             experience,
-            projects,
         } = req.body;
 
         // Validate required fields
@@ -74,45 +72,6 @@ const createPortfolio = async (req, res) => {
             }
         }
 
-        // Validate project technologies
-        if (projects && projects.length > 0) {
-            for (const project of projects) {
-                if (
-                    !project.title ||
-                    !project.description ||
-                    !project.githubLink
-                ) {
-                    return res.status(400).json({
-                        success: false,
-                        message:
-                            "Each project must have title, description, and githubLink",
-                    });
-                }
-
-                if (
-                    project.technologiesUsed &&
-                    project.technologiesUsed.length > 0
-                ) {
-                    const validTechs = await Technology.find({
-                        _id: { $in: project.technologiesUsed },
-                    });
-                    if (validTechs.length !== project.technologiesUsed.length) {
-                        return res.status(400).json({
-                            success: false,
-                            message: `Invalid technology IDs in project: ${project.title}`,
-                        });
-                    }
-                }
-
-                if (!project.keyFeatures || project.keyFeatures.length === 0) {
-                    return res.status(400).json({
-                        success: false,
-                        message: `Project ${project.title} must have at least one key feature`,
-                    });
-                }
-            }
-        }
-
         // Validate education entries
         if (education && education.length > 0) {
             for (const edu of education) {
@@ -163,7 +122,6 @@ const createPortfolio = async (req, res) => {
             skills: skills || [],
             education: education || [],
             experience: experience || [],
-            projects: projects || [],
         });
 
         if (!portfolio) {

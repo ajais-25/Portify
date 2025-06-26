@@ -32,7 +32,104 @@ const userSchema = new Schema(
             type: String,
             enum: ["user", "admin"],
             default: "user",
+            required: true,
         },
+        whatAreYou: {
+            type: String,
+            trim: true,
+        },
+        description: {
+            type: String,
+            trim: true,
+        },
+        phone: {
+            type: String,
+            trim: true,
+        },
+        country: {
+            type: String,
+            trim: true,
+        },
+        city: {
+            type: String,
+            trim: true,
+        },
+        socialLinks: {
+            github: {
+                type: String,
+                trim: true,
+            },
+            linkedin: {
+                type: String,
+                trim: true,
+            },
+            twitter: {
+                type: String,
+                trim: true,
+            },
+            website: {
+                type: String,
+                trim: true,
+            },
+        },
+        resume: {
+            type: String,
+            trim: true,
+        },
+        skills: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Technology",
+            },
+        ],
+        education: [
+            {
+                institution: {
+                    type: String,
+                    trim: true,
+                },
+                degree: {
+                    type: String,
+                    trim: true,
+                },
+                startDate: {
+                    type: Date,
+                },
+                endDate: {
+                    type: Date,
+                },
+            },
+        ],
+        experience: [
+            {
+                company: {
+                    type: String,
+                    trim: true,
+                },
+                position: {
+                    type: String,
+                    trim: true,
+                },
+                startDate: {
+                    type: Date,
+                },
+                endDate: {
+                    type: Date,
+                },
+                responsibilities: [
+                    {
+                        type: String,
+                        trim: true,
+                    },
+                ],
+            },
+        ],
+        projects: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Project",
+            },
+        ],
     },
     { timestamps: true }
 );

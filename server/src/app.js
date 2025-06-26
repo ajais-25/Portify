@@ -19,11 +19,11 @@ app.use(cookieParser());
 // Import routes
 import userRoutes from "./routes/user.routes.js";
 import technologyRoutes from "./routes/technology.routes.js";
-import portfolioRoutes from "./routes/portfolio.routes.js";
+import projectRoutes from "./routes/project.routes.js";
 
 // Routes declaration
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/technologies", technologyRoutes);
-app.use("/api/v1/portfolios", portfolioRoutes);
+app.use("/api/v1/projects", projectRoutes);
 
 export default app;

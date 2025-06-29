@@ -46,6 +46,11 @@ const addProject = async (req, res) => {
                     message: "Image upload failed",
                 });
             }
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: "Image file is required",
+            });
         }
 
         const newProject = await Project.create({
@@ -100,6 +105,35 @@ const getAllProjects = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Internal server error",
+            error: error.message,
+        });
+    }
+};
+
+const getUserProjects = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const projects = await Project.find({ userId })
+            .populate("userId", "name email")
+            .populate("technologiesUsed", "name");
+
+        if (projects.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No projects found for this user",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            projects,
+        });
+    } catch (error) {
+        console.error("Error fetching user projects:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error fetching user projects",
             error: error.message,
         });
     }
@@ -282,6 +316,7 @@ const deleteProject = async (req, res) => {
 export {
     addProject,
     getAllProjects,
+    getUserProjects,
     getProjectById,
     updateProject,
     deleteProject,

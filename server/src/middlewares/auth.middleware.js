@@ -7,6 +7,7 @@ const verifyUser = async (req, res, next) => {
 
         if (!token) {
             return res.status(401).json({
+                success: false,
                 message: "Unauthorized request",
             });
         }
@@ -23,7 +24,9 @@ const verifyUser = async (req, res, next) => {
 
         next();
     } catch (error) {
-        return res.status(401).json({ message: "Invalid Token" });
+        return res
+            .status(401)
+            .json({ success: false, message: "Invalid Token" });
     }
 };
 

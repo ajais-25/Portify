@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
     addProject,
     getAllProjects,
+    getUserProjects,
     getProjectById,
     updateProject,
     deleteProject,
@@ -16,7 +17,9 @@ router.use(verifyUser);
 router
     .route("/")
     .post(upload.single("imageURL"), addProject)
-    .get(getAllProjects);
+    .get(getUserProjects);
+
+router.get("/all", getAllProjects);
 
 router
     .route("/:id")

@@ -139,4 +139,253 @@ const logout = async (req, res) => {
     }
 };
 
-export { register, login, logout };
+// profile controllers
+const updateUserAbout = async (req, res) => {
+    const { whatAreYou, description, phone, country, city } = req.body;
+
+    if (!whatAreYou || !description || !phone || !country || !city) {
+        return res.status(400).json({
+            success: false,
+            message: "All fields are required",
+        });
+    }
+
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        user.whatAreYou = whatAreYou;
+        user.description = description;
+        user.phone = phone;
+        user.country = country;
+        user.city = city;
+
+        await user.save({ validateBeforeSave: false });
+
+        return res.status(200).json({
+            success: true,
+            message: "User about updated successfully",
+            data: {
+                whatAreYou: user.whatAreYou,
+                description: user.description,
+                phone: user.phone,
+                country: user.country,
+                city: user.city,
+            },
+        });
+    } catch (error) {
+        console.error("Error updating user about:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error updating user about",
+        });
+    }
+};
+
+const updateUserSocialLinks = async (req, res) => {
+    try {
+        const { github, linkedin, twitter, website } = req.body;
+
+        const userId = req.user._id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        user.socialLinks.github = github;
+        user.socialLinks.linkedin = linkedin;
+        user.socialLinks.twitter = twitter;
+        user.socialLinks.website = website;
+
+        await user.save({ validateBeforeSave: false });
+
+        return res.status(200).json({
+            success: true,
+            message: "User social links updated successfully",
+            data: user.socialLinks,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Error updating user social links",
+        });
+    }
+};
+
+const updateUserSkillsAndResume = async (req, res) => {
+    const { skills, resume } = req.body;
+
+    if (!skills || !resume) {
+        return res.status(400).json({
+            success: false,
+            message: "Skills and resume are required",
+        });
+    }
+
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        user.skills = skills;
+        user.resume = resume;
+
+        await user.save({ validateBeforeSave: false });
+
+        return res.status(200).json({
+            success: true,
+            message: "User skills and resume updated successfully",
+            data: {
+                skills: user.skills,
+                resume: user.resume,
+            },
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Error updating user skills and resume",
+        });
+    }
+};
+
+const updateUserEducation = async (req, res) => {
+    const { education } = req.body;
+
+    if (!education || !Array.isArray(education)) {
+        return res.status(400).json({
+            success: false,
+            message: "Education is required and must be an array",
+        });
+    }
+
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        user.education = education;
+
+        await user.save({ validateBeforeSave: false });
+
+        return res.status(200).json({
+            success: true,
+            message: "User education updated successfully",
+            data: user.education,
+        });
+    } catch (error) {
+        console.error("Error updating user education:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error updating user education",
+        });
+    }
+};
+
+const updateUserExperience = async (req, res) => {
+    const { experience } = req.body;
+
+    if (!experience || !Array.isArray(experience)) {
+        return res.status(400).json({
+            success: false,
+            message: "Experience is required and must be an array",
+        });
+    }
+
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        user.experience = experience;
+
+        await user.save({ validateBeforeSave: false });
+
+        return res.status(200).json({
+            success: true,
+            message: "User experience updated successfully",
+            data: user.experience,
+        });
+    } catch (error) {
+        console.error("Error updating user experience:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error updating user experience",
+        });
+    }
+};
+
+const getUserProfile = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId)
+            .populate("skills", "name")
+            .populate("projects")
+            .populate("projects.technologiesUsed", "name")
+            .select("-password");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: user,
+        });
+    } catch (error) {
+        console.error("Error retrieving user profile:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error retrieving user profile",
+        });
+    }
+};
+
+export {
+    register,
+    login,
+    logout,
+    updateUserAbout,
+    updateUserSocialLinks,
+    updateUserSkillsAndResume,
+    updateUserEducation,
+    updateUserExperience,
+    getUserProfile,
+};

@@ -16,7 +16,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { login, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
   // Redirect if user is already authenticated
   useEffect(() => {
     if (!authLoading && isAuthenticated) {

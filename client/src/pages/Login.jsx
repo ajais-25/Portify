@@ -12,7 +12,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
 
   // Get the intended destination from location state, default to home
   const from = location.state?.from?.pathname || "/";

@@ -93,10 +93,12 @@ const userSchema = new Schema(
                     trim: true,
                 },
                 startDate: {
-                    type: Date,
+                    type: String, // Format: "MM/YYYY"
+                    trim: true,
                 },
                 endDate: {
-                    type: Date,
+                    type: String, // Format: "MM/YYYY", optional
+                    trim: true,
                 },
             },
         ],
@@ -111,10 +113,12 @@ const userSchema = new Schema(
                     trim: true,
                 },
                 startDate: {
-                    type: Date,
+                    type: String, // Format: "MM/YYYY"
+                    trim: true,
                 },
                 endDate: {
-                    type: Date,
+                    type: String, // Format: "MM/YYYY", optional
+                    trim: true,
                 },
                 responsibilities: [
                     {

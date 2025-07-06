@@ -17,6 +17,13 @@ const getPortfolio = async (req, res) => {
                 "projects",
                 "title description technologiesUsed keyFeatures githubLink liveLink imageURL"
             )
+            .populate({
+                path: "projects",
+                populate: {
+                    path: "technologiesUsed",
+                    select: "name",
+                },
+            })
             .populate("projects.technologiesUsed", "name")
             .select("-password -__v");
 

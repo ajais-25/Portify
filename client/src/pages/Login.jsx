@@ -131,7 +131,7 @@ const Login = () => {
     };
 
     try {
-      const response = await api.post("/auth/login", demoCredentials);
+      const response = await api.post("/users/login", demoCredentials);
 
       if (response.data.success === true) {
         // Extract token and user data from response

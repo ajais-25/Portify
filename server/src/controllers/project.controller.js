@@ -18,17 +18,31 @@ const addProject = async (req, res) => {
 
         const userId = req.user._id;
 
+        // Parse JSON strings from FormData
+        let parsedTechnologies;
+        let parsedKeyFeatures;
+
+        try {
+            parsedTechnologies = JSON.parse(technologiesUsed);
+            parsedKeyFeatures = JSON.parse(keyFeatures);
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid format for technologies or key features",
+            });
+        }
+
         if (
             !title ||
             !description ||
-            !technologiesUsed ||
-            !keyFeatures ||
-            !githubLink ||
-            !liveLink
+            !parsedTechnologies ||
+            !parsedKeyFeatures ||
+            !githubLink
         ) {
             return res.status(400).json({
                 success: false,
-                message: "All fields are required",
+                message:
+                    "Title, description, technologies, key features, and GitHub link are required",
             });
         }
 
@@ -46,22 +60,17 @@ const addProject = async (req, res) => {
                     message: "Image upload failed",
                 });
             }
-        } else {
-            return res.status(400).json({
-                success: false,
-                message: "Image file is required",
-            });
         }
 
         const newProject = await Project.create({
             userId,
             title,
             description,
-            technologiesUsed,
-            keyFeatures,
+            technologiesUsed: parsedTechnologies,
+            keyFeatures: parsedKeyFeatures,
             githubLink,
-            liveLink,
-            imageURL: uploadedImage.secure_url,
+            liveLink: liveLink || "",
+            imageURL: uploadedImage?.secure_url || "",
         });
 
         const user = await User.findById(userId);

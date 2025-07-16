@@ -82,26 +82,6 @@ const userSchema = new Schema(
                 ref: "Technology",
             },
         ],
-        education: [
-            {
-                institution: {
-                    type: String,
-                    trim: true,
-                },
-                degree: {
-                    type: String,
-                    trim: true,
-                },
-                startDate: {
-                    type: String, // Format: "MM/YYYY"
-                    trim: true,
-                },
-                endDate: {
-                    type: String, // Format: "MM/YYYY", optional
-                    trim: true,
-                },
-            },
-        ],
         experience: [
             {
                 company: {

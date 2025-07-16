@@ -5,7 +5,6 @@ import About from "../components/portfolio/About";
 import SocialLinks from "../components/portfolio/SocialLinks";
 import Projects from "../components/portfolio/Projects";
 import SkillsResume from "../components/portfolio/SkillsResume";
-import Education from "../components/portfolio/Education";
 import Experience from "../components/portfolio/Experience";
 
 const Dashboard = () => {
@@ -19,7 +18,6 @@ const Dashboard = () => {
     { id: "social", label: "Social Links" },
     { id: "projects", label: "Projects" },
     { id: "skills", label: "Skills & Resume" },
-    { id: "education", label: "Education" },
     { id: "experience", label: "Experience" },
   ];
 
@@ -119,9 +117,6 @@ const Dashboard = () => {
             )}
             {activeTab === "skills" && (
               <SkillsResume userData={userData} onUpdate={handleDataUpdate} />
-            )}
-            {activeTab === "education" && (
-              <Education userData={userData} onUpdate={handleDataUpdate} />
             )}
             {activeTab === "experience" && (
               <Experience userData={userData} onUpdate={handleDataUpdate} />

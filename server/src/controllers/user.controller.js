@@ -355,7 +355,13 @@ const getUserProfile = async (req, res) => {
         const user = await User.findById(userId)
             .populate("skills", "name")
             .populate("projects")
-            .populate("projects.technologiesUsed", "name")
+            .populate({
+                path: "projects",
+                populate: {
+                    path: "technologiesUsed",
+                    select: "name",
+                },
+            })
             .select("-password");
 
         if (!user) {

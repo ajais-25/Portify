@@ -24,7 +24,6 @@ const getPortfolio = async (req, res) => {
                     select: "name",
                 },
             })
-            .populate("projects.technologiesUsed", "name")
             .select("-password -__v");
 
         if (!user) {

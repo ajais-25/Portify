@@ -25,7 +25,7 @@ const Projects = ({ userData, onUpdate }) => {
 
   const fetchTechnologies = async () => {
     try {
-      const response = await api.get("/technology");
+      const response = await api.get("/technologies");
       setTechnologies(response.data.data);
     } catch (error) {
       console.error("Error fetching technologies:", error);
@@ -476,7 +476,7 @@ const Projects = ({ userData, onUpdate }) => {
                 <div className="flex space-x-2">
                   <button
                     onClick={() => handleEdit(project)}
-                    className="text-gray-600 hover:text-gray-800"
+                    className="text-gray-600 hover:text-gray-800 cursor-pointer"
                   >
                     <svg
                       className="w-4 h-4"
@@ -494,7 +494,7 @@ const Projects = ({ userData, onUpdate }) => {
                   </button>
                   <button
                     onClick={() => handleDelete(project._id)}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-red-600 hover:text-red-800 cursor-pointer"
                   >
                     <svg
                       className="w-4 h-4"

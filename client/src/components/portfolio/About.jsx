@@ -64,7 +64,7 @@ const About = ({ userData, onUpdate }) => {
             htmlFor="whatAreYou"
             className="block text-sm font-medium text-gray-700"
           >
-            What Are You? *
+            Bio*
           </label>
           <input
             type="text"
@@ -82,7 +82,7 @@ const About = ({ userData, onUpdate }) => {
             htmlFor="description"
             className="block text-sm font-medium text-gray-700"
           >
-            Description
+            Description*
           </label>
           <textarea
             name="description"
@@ -92,28 +92,11 @@ const About = ({ userData, onUpdate }) => {
             onChange={handleChange}
             placeholder="Describe yourself, your skills, and what you do..."
             className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            required
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Phone
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              id="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="1234567890"
-              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
           <div>
             <label
               htmlFor="country"
@@ -129,33 +112,34 @@ const About = ({ userData, onUpdate }) => {
               onChange={handleChange}
               placeholder="West Bengal"
               className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
             />
           </div>
-        </div>
 
-        <div>
-          <label
-            htmlFor="city"
-            className="block text-sm font-medium text-gray-700"
-          >
-            City
-          </label>
-          <input
-            type="text"
-            name="city"
-            id="city"
-            value={formData.city}
-            onChange={handleChange}
-            placeholder="Kolkata"
-            className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+          <div>
+            <label
+              htmlFor="city"
+              className="block text-sm font-medium text-gray-700"
+            >
+              City
+            </label>
+            <input
+              type="text"
+              name="city"
+              id="city"
+              value={formData.city}
+              onChange={handleChange}
+              placeholder="Kolkata"
+              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
         </div>
 
         <div className="flex justify-end">
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? "Saving..." : "Save Changes"}
           </button>

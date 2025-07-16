@@ -34,15 +34,11 @@ const userSchema = new Schema(
             default: "user",
             required: true,
         },
-        whatAreYou: {
+        bio: {
             type: String,
             trim: true,
         },
         description: {
-            type: String,
-            trim: true,
-        },
-        phone: {
             type: String,
             trim: true,
         },

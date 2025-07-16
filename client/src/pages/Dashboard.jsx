@@ -60,7 +60,7 @@ const Dashboard = () => {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Portfolio Dashboard
+                Portify Dashboard
               </h1>
               <p className="mt-1 text-sm text-gray-500">
                 Manage your portfolio information
@@ -74,7 +74,7 @@ const Dashboard = () => {
                 onClick={() =>
                   window.open(`/portfolio/${user?.username}`, "_blank")
                 }
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
               >
                 View Portfolio
               </button>

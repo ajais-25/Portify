@@ -92,10 +92,6 @@ const SkillsResume = ({ userData, onUpdate }) => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Skills Section */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
-            Skills
-          </label>
-
           {/* Selected Skills */}
           {selectedTechnologies.length > 0 && (
             <div className="mb-4">
@@ -199,7 +195,7 @@ const SkillsResume = ({ userData, onUpdate }) => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? "Saving..." : "Save Changes"}
           </button>

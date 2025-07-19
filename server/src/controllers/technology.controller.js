@@ -1,9 +1,9 @@
 import { Technology } from "../models/technology.model.js";
 
 const addTechnology = async (req, res) => {
-    const { name, type, image } = req.body;
+    const { name, image } = req.body;
 
-    if (!name || !type || !image) {
+    if (!name || !image) {
         return res.status(400).json({
             success: false,
             message: "All fields are required",
@@ -22,7 +22,6 @@ const addTechnology = async (req, res) => {
 
         const technology = await Technology.create({
             name,
-            type,
             image,
         });
 

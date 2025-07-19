@@ -1,14 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  ChevronDown,
-  Wrench,
-  Mail,
-  ExternalLink,
-  Code,
-  Palette,
-  Smartphone,
-  Globe,
-} from "lucide-react";
+import { ChevronDown, Mail, ExternalLink, Code } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
@@ -57,134 +48,104 @@ const Portfolio = () => {
 
   const skills = [
     {
-      name: "Frontend Development",
-      icon: Code,
-      items: [
-        {
-          name: "React",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
-        },
-        {
-          name: "Vue.js",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg",
-        },
-        {
-          name: "TypeScript",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg",
-        },
-        {
-          name: "Tailwind CSS",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
-        },
-      ],
+      name: "React",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
     },
     {
-      name: "Backend Development",
-      icon: Globe,
-      items: [
-        {
-          name: "Node.js",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg",
-        },
-        {
-          name: "Python",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg",
-        },
-        {
-          name: "PostgreSQL",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg",
-        },
-        {
-          name: "MongoDB",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg",
-        },
-      ],
+      name: "Vue.js",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg",
     },
     {
-      name: "Mobile Development",
-      icon: Smartphone,
-      items: [
-        {
-          name: "React Native",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
-        },
-        {
-          name: "Flutter",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg",
-        },
-        {
-          name: "Android",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg",
-        },
-        {
-          name: "Swift",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swift/swift-original.svg",
-        },
-      ],
+      name: "TypeScript",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg",
     },
     {
-      name: "Design & UX",
-      icon: Palette,
-      items: [
-        {
-          name: "Figma",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg",
-        },
-        {
-          name: "Adobe XD",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/xd/xd-original.svg",
-        },
-        {
-          name: "Photoshop",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg",
-        },
-        {
-          name: "Illustrator",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-original.svg",
-        },
-      ],
+      name: "Tailwind CSS",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
     },
     {
-      name: "Tools & Others",
-      icon: Wrench,
-      items: [
-        {
-          name: "Git",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg",
-        },
-        {
-          name: "Docker",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg",
-        },
-        {
-          name: "AWS",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
-        },
-        {
-          name: "Firebase",
-          image:
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg",
-        },
-      ],
+      name: "Node.js",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg",
+    },
+    {
+      name: "Python",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg",
+    },
+    {
+      name: "PostgreSQL",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg",
+    },
+    {
+      name: "MongoDB",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg",
+    },
+    {
+      name: "React Native",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
+    },
+    {
+      name: "Flutter",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg",
+    },
+    {
+      name: "Android",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg",
+    },
+    {
+      name: "Swift",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swift/swift-original.svg",
+    },
+    {
+      name: "Figma",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg",
+    },
+    {
+      name: "Adobe XD",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/xd/xd-original.svg",
+    },
+    {
+      name: "Photoshop",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg",
+    },
+    {
+      name: "Illustrator",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-original.svg",
+    },
+    {
+      name: "Git",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg",
+    },
+    {
+      name: "Docker",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg",
+    },
+    {
+      name: "AWS",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
+    },
+    {
+      name: "Firebase",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg",
     },
   ];
 
@@ -368,37 +329,22 @@ const Portfolio = () => {
             <h2 className="text-4xl font-bold mb-6">Skills & Expertise</h2>
             <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
             {skills.map((skill, index) => (
               <div
                 key={index}
-                className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105"
+                className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105 group"
               >
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                    <skill.icon size={32} className="text-blue-600" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">
+                <div className="flex flex-col items-center">
+                  <img
+                    src={skill.image}
+                    alt={skill.name}
+                    className="w-12 h-12 mb-3 object-contain group-hover:scale-110 transition-transform duration-200"
+                    loading="lazy"
+                  />
+                  <span className="text-sm text-gray-700 text-center font-medium">
                     {skill.name}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  {skill.items.map((item, i) => (
-                    <div
-                      key={i}
-                      className="flex flex-col items-center p-3 bg-white rounded-lg hover:shadow-md transition-shadow duration-200 group"
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-8 h-8 mb-2 object-contain group-hover:scale-110 transition-transform duration-200"
-                        loading="lazy"
-                      />
-                      <span className="text-xs text-gray-700 text-center font-medium">
-                        {item.name}
-                      </span>
-                    </div>
-                  ))}
+                  </span>
                 </div>
               </div>
             ))}

@@ -10,7 +10,33 @@ const Portfolio = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+
+      // Update active section based on scroll position
+      const sections = [
+        "home",
+        "about",
+        "skills",
+        "experience",
+        "projects",
+        "contact",
+      ];
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const elementTop = rect.top + window.scrollY;
+          const elementBottom = elementTop + rect.height;
+
+          if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -47,6 +73,146 @@ const Portfolio = () => {
   ];
 
   const skills = [
+    {
+      name: "Jenkins",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jenkins/jenkins-original.svg",
+    },
+    {
+      name: "C++",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg",
+    },
+    {
+      name: "Socket.io",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/socketio/socketio-original.svg",
+    },
+    {
+      name: "Vitest",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitest/vitest-original.svg",
+    },
+    {
+      name: "Appwrite",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/appwrite/appwrite-original.svg",
+    },
+    {
+      name: "Cloudflare",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg",
+    },
+    {
+      name: "Three.js",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/threejs/threejs-original.svg",
+    },
+    {
+      name: "Qwik",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/qwik/qwik-original.svg",
+    },
+    {
+      name: "Svelte/SvelteKit",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/svelte/svelte-original.svg",
+    },
+    {
+      name: "Astro",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/astro/astro-original.svg",
+    },
+    {
+      name: "Salesforce",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/salesforce/salesforce-original.svg",
+    },
+    {
+      name: "Supabase",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg",
+    },
+    {
+      name: "OAuth",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oauth/oauth-original.svg",
+    },
+    {
+      name: "Kubernetes",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-plain.svg",
+    },
+    {
+      name: "Azure",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg",
+    },
+    {
+      name: "Vercel",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg",
+    },
+    {
+      name: "Netlify",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/netlify/netlify-original.svg",
+    },
+    {
+      name: "GitHub",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg",
+    },
+    {
+      name: "GitLab",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/gitlab/gitlab-original.svg",
+    },
+    {
+      name: "Jest",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jest/jest-plain.svg",
+    },
+    {
+      name: "Prisma",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prisma/prisma-original.svg",
+    },
+    {
+      name: "Mocha",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mocha/mocha-original.svg",
+    },
+    {
+      name: "Redux",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redux/redux-original.svg",
+    },
+    {
+      name: "MySQL",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg",
+    },
+    {
+      name: "Express.js",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg",
+    },
+    {
+      name: "PHP",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg",
+    },
+    {
+      name: "Postman",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg",
+    },
+    {
+      name: "Java",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg",
+    },
     {
       name: "React",
       image:
@@ -123,9 +289,29 @@ const Portfolio = () => {
         "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg",
     },
     {
-      name: "Illustrator",
+      name: "Google Cloud",
       image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-original.svg",
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg",
+    },
+    {
+      name: "HTML5",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
+    },
+    {
+      name: "CSS3",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg",
+    },
+    {
+      name: "JavaScript",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg",
+    },
+    {
+      name: "Angular",
+      image:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg",
     },
     {
       name: "Git",
@@ -213,9 +399,16 @@ const Portfolio = () => {
                 <button
                   key={item}
                   onClick={() => scrollToSection(item.toLowerCase())}
-                  className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium cursor-pointer"
+                  className={`transition-all duration-300 font-medium cursor-pointer relative ${
+                    activeSection === item.toLowerCase()
+                      ? "text-blue-600 drop-shadow-[0_0_8px_rgba(37,99,235,0.6)] font-semibold"
+                      : "text-gray-700 hover:text-blue-600"
+                  }`}
                 >
                   {item}
+                  {activeSection === item.toLowerCase() && (
+                    <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600 rounded-full shadow-[0_0_6px_rgba(37,99,235,0.8)]"></div>
+                  )}
                 </button>
               ))}
             </div>

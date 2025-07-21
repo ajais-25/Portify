@@ -141,9 +141,9 @@ const logout = async (req, res) => {
 
 // profile controllers
 const updateUserAbout = async (req, res) => {
-    const { whatAreYou, description, phone, country, city } = req.body;
+    const { bio, description } = req.body;
 
-    if (!whatAreYou || !description || !phone || !country || !city) {
+    if (!bio || !description) {
         return res.status(400).json({
             success: false,
             message: "All fields are required",
@@ -162,11 +162,8 @@ const updateUserAbout = async (req, res) => {
             });
         }
 
-        user.whatAreYou = whatAreYou;
+        user.bio = bio;
         user.description = description;
-        user.phone = phone;
-        user.country = country;
-        user.city = city;
 
         await user.save({ validateBeforeSave: false });
 
@@ -174,11 +171,8 @@ const updateUserAbout = async (req, res) => {
             success: true,
             message: "User about updated successfully",
             data: {
-                whatAreYou: user.whatAreYou,
+                bio: user.bio,
                 description: user.description,
-                phone: user.phone,
-                country: user.country,
-                city: user.city,
             },
         });
     } catch (error) {

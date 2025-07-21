@@ -3,11 +3,8 @@ import api from "../../api";
 
 const About = ({ userData, onUpdate }) => {
   const [formData, setFormData] = useState({
-    whatAreYou: userData?.whatAreYou || "",
+    bio: userData?.bio || "",
     description: userData?.description || "",
-    phone: userData?.phone || "",
-    country: userData?.country || "",
-    city: userData?.city || "",
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -68,9 +65,9 @@ const About = ({ userData, onUpdate }) => {
           </label>
           <input
             type="text"
-            name="whatAreYou"
-            id="whatAreYou"
-            value={formData.whatAreYou}
+            name="bio"
+            id="bio"
+            value={formData.bio}
             onChange={handleChange}
             placeholder="e.g., Full Stack Developer, UI/UX Designer"
             className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -94,45 +91,6 @@ const About = ({ userData, onUpdate }) => {
             className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             required
           />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label
-              htmlFor="country"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Country
-            </label>
-            <input
-              type="text"
-              name="country"
-              id="country"
-              value={formData.country}
-              onChange={handleChange}
-              placeholder="West Bengal"
-              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="city"
-              className="block text-sm font-medium text-gray-700"
-            >
-              City
-            </label>
-            <input
-              type="text"
-              name="city"
-              id="city"
-              value={formData.city}
-              onChange={handleChange}
-              placeholder="Kolkata"
-              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
         </div>
 
         <div className="flex justify-end">

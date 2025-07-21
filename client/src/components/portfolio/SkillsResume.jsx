@@ -38,7 +38,7 @@ const SkillsResume = ({ userData, onUpdate }) => {
     setMessage("");
 
     try {
-      const response = await api.put("/user/profile/skills-resume", {
+      const response = await api.put("/users/profile/skills-resume", {
         skills: selectedSkills,
         resume: resume,
       });

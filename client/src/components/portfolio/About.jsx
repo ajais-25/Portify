@@ -3,7 +3,7 @@ import api from "../../api";
 
 const About = ({ userData, onUpdate }) => {
   const [formData, setFormData] = useState({
-    bio: userData?.bio || "",
+    tagline: userData?.tagline || "",
     description: userData?.description || "",
   });
   const [loading, setLoading] = useState(false);
@@ -61,13 +61,13 @@ const About = ({ userData, onUpdate }) => {
             htmlFor="whatAreYou"
             className="block text-sm font-medium text-gray-700"
           >
-            Bio*
+            tagline*
           </label>
           <input
             type="text"
-            name="bio"
-            id="bio"
-            value={formData.bio}
+            name="tagline"
+            id="tagline"
+            value={formData.tagline}
             onChange={handleChange}
             placeholder="e.g., Full Stack Developer, UI/UX Designer"
             className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

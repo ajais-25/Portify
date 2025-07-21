@@ -34,7 +34,7 @@ const userSchema = new Schema(
             default: "user",
             required: true,
         },
-        bio: {
+        tagline: {
             type: String,
             trim: true,
         },

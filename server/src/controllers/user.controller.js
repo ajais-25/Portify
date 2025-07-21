@@ -141,9 +141,9 @@ const logout = async (req, res) => {
 
 // profile controllers
 const updateUserAbout = async (req, res) => {
-    const { bio, description } = req.body;
+    const { tagline, description } = req.body;
 
-    if (!bio || !description) {
+    if (!tagline || !description) {
         return res.status(400).json({
             success: false,
             message: "All fields are required",
@@ -162,7 +162,7 @@ const updateUserAbout = async (req, res) => {
             });
         }
 
-        user.bio = bio;
+        user.tagline = tagline;
         user.description = description;
 
         await user.save({ validateBeforeSave: false });
@@ -171,7 +171,7 @@ const updateUserAbout = async (req, res) => {
             success: true,
             message: "User about updated successfully",
             data: {
-                bio: user.bio,
+                tagline: user.tagline,
                 description: user.description,
             },
         });

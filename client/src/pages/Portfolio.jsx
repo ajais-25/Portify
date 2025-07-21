@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { ChevronDown, Mail, ExternalLink, Code } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -25,8 +25,8 @@ const Portfolio = () => {
         return;
       }
 
-      console.log(response.data);
-      setPortfolioData(response.data);
+      console.log(response.data.data);
+      setPortfolioData(response.data.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching portfolio data:", error);
@@ -79,335 +79,6 @@ const Portfolio = () => {
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const projects = [
-    {
-      title: "E-Commerce Platform",
-      description:
-        "A full-stack e-commerce solution with React, Node.js, and PostgreSQL. Features include user authentication, payment processing, and admin dashboard.",
-      tech: ["React", "Node.js", "PostgreSQL", "Stripe"],
-      github: "#",
-      live: "#",
-    },
-    {
-      title: "Task Management App",
-      description:
-        "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
-      tech: ["React", "Socket.io", "MongoDB", "Express"],
-      github: "#",
-      live: "#",
-    },
-    {
-      title: "Weather Dashboard",
-      description:
-        "A responsive weather application with location-based forecasts, interactive maps, and weather alerts using OpenWeatherMap API.",
-      tech: ["React", "OpenWeatherMap API", "Chart.js", "Tailwind"],
-      github: "#",
-      live: "#",
-    },
-  ];
-
-  const skills = [
-    {
-      name: "Jenkins",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jenkins/jenkins-original.svg",
-    },
-    {
-      name: "C++",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg",
-    },
-    {
-      name: "Socket.io",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/socketio/socketio-original.svg",
-    },
-    {
-      name: "Vitest",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitest/vitest-original.svg",
-    },
-    {
-      name: "Appwrite",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/appwrite/appwrite-original.svg",
-    },
-    {
-      name: "Cloudflare",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg",
-    },
-    {
-      name: "Three.js",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/threejs/threejs-original.svg",
-    },
-    {
-      name: "Qwik",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/qwik/qwik-original.svg",
-    },
-    {
-      name: "Svelte/SvelteKit",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/svelte/svelte-original.svg",
-    },
-    {
-      name: "Astro",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/astro/astro-original.svg",
-    },
-    {
-      name: "Salesforce",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/salesforce/salesforce-original.svg",
-    },
-    {
-      name: "Supabase",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg",
-    },
-    {
-      name: "OAuth",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oauth/oauth-original.svg",
-    },
-    {
-      name: "Kubernetes",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-plain.svg",
-    },
-    {
-      name: "Azure",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg",
-    },
-    {
-      name: "Vercel",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg",
-    },
-    {
-      name: "Netlify",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/netlify/netlify-original.svg",
-    },
-    {
-      name: "GitHub",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg",
-    },
-    {
-      name: "GitLab",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/gitlab/gitlab-original.svg",
-    },
-    {
-      name: "Jest",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jest/jest-plain.svg",
-    },
-    {
-      name: "Prisma",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prisma/prisma-original.svg",
-    },
-    {
-      name: "Mocha",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mocha/mocha-original.svg",
-    },
-    {
-      name: "Redux",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redux/redux-original.svg",
-    },
-    {
-      name: "MySQL",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg",
-    },
-    {
-      name: "Express.js",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg",
-    },
-    {
-      name: "PHP",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg",
-    },
-    {
-      name: "Postman",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg",
-    },
-    {
-      name: "Java",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg",
-    },
-    {
-      name: "React",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
-    },
-    {
-      name: "Vue.js",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg",
-    },
-    {
-      name: "TypeScript",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg",
-    },
-    {
-      name: "Tailwind CSS",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
-    },
-    {
-      name: "Node.js",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg",
-    },
-    {
-      name: "Python",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg",
-    },
-    {
-      name: "PostgreSQL",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg",
-    },
-    {
-      name: "MongoDB",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg",
-    },
-    {
-      name: "React Native",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
-    },
-    {
-      name: "Flutter",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg",
-    },
-    {
-      name: "Android",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg",
-    },
-    {
-      name: "Swift",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swift/swift-original.svg",
-    },
-    {
-      name: "Figma",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg",
-    },
-    {
-      name: "Adobe XD",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/xd/xd-original.svg",
-    },
-    {
-      name: "Photoshop",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg",
-    },
-    {
-      name: "Google Cloud",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg",
-    },
-    {
-      name: "HTML5",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
-    },
-    {
-      name: "CSS3",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg",
-    },
-    {
-      name: "JavaScript",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg",
-    },
-    {
-      name: "Angular",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg",
-    },
-    {
-      name: "Git",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg",
-    },
-    {
-      name: "Docker",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg",
-    },
-    {
-      name: "AWS",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
-    },
-    {
-      name: "Firebase",
-      image:
-        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg",
-    },
-  ];
-
-  const experiences = [
-    {
-      company: "TechCorp Solutions",
-      position: "Senior Full Stack Developer",
-      startDate: "Jan 2023",
-      endDate: "Present",
-      responsibilities: [
-        "Led development of microservices architecture serving 100k+ users",
-        "Mentored junior developers and conducted code reviews",
-        "Implemented CI/CD pipelines reducing deployment time by 60%",
-        "Collaborated with cross-functional teams to deliver features on time",
-      ],
-    },
-    {
-      company: "StartupXYZ",
-      position: "Frontend Developer",
-      startDate: "Jun 2021",
-      endDate: "Dec 2022",
-      responsibilities: [
-        "Developed responsive web applications using React and TypeScript",
-        "Improved application performance by 40% through optimization",
-        "Integrated third-party APIs and payment gateways",
-        "Worked closely with designers to implement pixel-perfect UIs",
-      ],
-    },
-    {
-      company: "Digital Agency Pro",
-      position: "Junior Web Developer",
-      startDate: "Mar 2020",
-      endDate: "May 2021",
-      responsibilities: [
-        "Built custom WordPress themes and plugins for clients",
-        "Maintained and updated existing client websites",
-        "Collaborated with design team to create engaging user experiences",
-        "Learned modern JavaScript frameworks and best practices",
-      ],
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -500,37 +171,36 @@ const Portfolio = () => {
             <div className="max-w-4xl text-center z-10">
               <div className="animate-fade-in">
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  John Developer
+                  {portfolioData.name}
                 </h1>
                 <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                  Full-stack developer crafting digital experiences with modern
-                  technologies and creative solutions
+                  {portfolioData.tagline}
                 </p>
                 <div className="flex justify-center space-x-6 mb-12">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
                   >
                     <FaGithub size={26} />
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    to="#"
                     className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
                   >
                     <FaLinkedin size={26} />
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    to="#"
                     className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
                   >
                     <FaXTwitter size={26} />
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    to={`mailto:john@example.com`}
                     className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
                   >
                     <Mail size={26} />
-                  </a>
+                  </Link>
                 </div>
                 <button
                   onClick={() => scrollToSection("about")}
@@ -554,7 +224,9 @@ const Portfolio = () => {
               </div>
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h3 className="text-2xl font-semibold mb-4">Hi, I'm John</h3>
+                  <h3 className="text-2xl font-semibold mb-4">
+                    Hi, I'm {portfolioData.name.split(" ")[0]}
+                  </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
                     I'm a passionate full-stack developer with 5+ years of
                     experience building scalable web applications. I love
@@ -599,7 +271,7 @@ const Portfolio = () => {
                 <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-                {skills.map((skill, index) => (
+                {portfolioData.skills.map((skill, index) => (
                   <div
                     key={index}
                     className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105 group"
@@ -631,7 +303,7 @@ const Portfolio = () => {
                 <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
               </div>
               <div className="space-y-8">
-                {experiences.map((experience, index) => (
+                {portfolioData.experience.map((experience, index) => (
                   <div
                     key={index}
                     className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
@@ -682,13 +354,39 @@ const Portfolio = () => {
                 <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {projects.map((project, index) => (
+                {portfolioData.projects.map((project, index) => (
                   <div
                     key={index}
                     className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                   >
-                    <div className="h-48 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                      <Code size={48} className="text-blue-600" />
+                    <div className="h-48 relative overflow-hidden">
+                      {project.imageURL ? (
+                        <img
+                          src={project.imageURL}
+                          alt={project.title}
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                            e.target.parentElement.classList.add(
+                              "bg-gradient-to-br",
+                              "from-blue-100",
+                              "to-purple-100",
+                              "flex",
+                              "items-center",
+                              "justify-center"
+                            );
+                            const fallbackDiv = document.createElement("div");
+                            fallbackDiv.innerHTML =
+                              '<svg class="text-blue-600" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>';
+                            e.target.parentElement.appendChild(fallbackDiv);
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                          <Code size={48} className="text-blue-600" />
+                        </div>
+                      )}
                     </div>
                     <div className="p-6">
                       <h3 className="text-xl font-semibold mb-3">
@@ -698,28 +396,30 @@ const Portfolio = () => {
                         {project.description}
                       </p>
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {project.tech.map((tech, i) => (
+                        {project.technologiesUsed.map((tech, i) => (
                           <span
                             key={i}
                             className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
                           >
-                            {tech}
+                            {tech.name || tech}
                           </span>
                         ))}
                       </div>
                       <div className="flex space-x-4">
-                        <a
-                          href={project.github}
+                        <Link
+                          to={project.githubLink}
                           className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
                         >
                           <FaGithub size={20} />
-                        </a>
-                        <a
-                          href={project.live}
-                          className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
-                        >
-                          <ExternalLink size={20} />
-                        </a>
+                        </Link>
+                        {project.liveLink && (
+                          <Link
+                            to={project.liveLink || project.live}
+                            className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                          >
+                            <ExternalLink size={20} />
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -738,18 +438,19 @@ const Portfolio = () => {
                 projects. Let's discuss how we can bring your ideas to life.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <a
-                  href="mailto:john@example.com"
+                <Link
+                  to={`mailto:john@example.com`}
                   className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   Send me an email
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to={portfolioData.resume}
+                  target="_blank"
                   className="border border-blue-600 text-blue-600 px-8 py-3 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-105"
                 >
-                  Download CV
-                </a>
+                  View Resume
+                </Link>
               </div>
             </div>
           </section>
@@ -758,32 +459,32 @@ const Portfolio = () => {
           <footer className="bg-gray-900 text-white py-12 px-6">
             <div className="max-w-6xl mx-auto text-center">
               <div className="flex justify-center space-x-6 mb-6">
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="text-gray-400 hover:text-white transition-colors duration-200"
                 >
                   <FaGithub size={26} />
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="#"
                   className="text-gray-400 hover:text-white transition-colors duration-200"
                 >
                   <FaLinkedin size={26} />
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="#"
                   className="text-gray-400 hover:text-white transition-colors duration-200"
                 >
                   <FaXTwitter size={26} />
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to={`mailto:john@example.com`}
                   className="text-gray-400 hover:text-white transition-colors duration-200"
                 >
                   <Mail size={26} />
-                </a>
+                </Link>
               </div>
-              <p className="text-gray-400">© 2025 John Developer</p>
+              <p className="text-gray-400">© 2025 {portfolioData.name}</p>
             </div>
           </footer>
 

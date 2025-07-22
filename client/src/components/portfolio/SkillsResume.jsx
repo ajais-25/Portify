@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "../../api";
 
 const SkillsResume = ({ userData, onUpdate }) => {
@@ -9,11 +9,33 @@ const SkillsResume = ({ userData, onUpdate }) => {
   const [resume, setResume] = useState(userData?.resume || "");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+
+  // Technology filter states
+  const [techFilter, setTechFilter] = useState("");
+  const [showTechDropdown, setShowTechDropdown] = useState(false);
+  const [focusedTechIndex, setFocusedTechIndex] = useState(-1);
+
+  // Refs for dropdown scrolling
+  const dropdownRef = useRef(null);
+  const focusedItemRefs = useRef([]);
 
   useEffect(() => {
     fetchTechnologies();
   }, []);
+
+  // Scroll focused item into view
+  useEffect(() => {
+    if (
+      focusedTechIndex >= 0 &&
+      showTechDropdown &&
+      focusedItemRefs.current[focusedTechIndex]
+    ) {
+      focusedItemRefs.current[focusedTechIndex].scrollIntoView({
+        block: "nearest",
+        behavior: "smooth",
+      });
+    }
+  }, [focusedTechIndex, showTechDropdown]);
 
   const fetchTechnologies = async () => {
     try {
@@ -32,6 +54,56 @@ const SkillsResume = ({ userData, onUpdate }) => {
     );
   };
 
+  // Filter technologies based on search input and exclude already selected ones
+  const filteredTechnologies = technologies.filter(
+    (tech) =>
+      tech.name.toLowerCase().includes(techFilter.toLowerCase()) &&
+      !selectedSkills.includes(tech._id)
+  );
+
+  // Handle technology filter input and keyboard navigation
+  const handleTechFilterChange = (e) => {
+    setTechFilter(e.target.value);
+    setShowTechDropdown(true);
+    setFocusedTechIndex(-1);
+  };
+
+  const handleTechFilterKeyDown = (e) => {
+    if (!showTechDropdown) return;
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setFocusedTechIndex((prev) =>
+          prev < filteredTechnologies.length - 1 ? prev + 1 : 0
+        );
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setFocusedTechIndex((prev) =>
+          prev > 0 ? prev - 1 : filteredTechnologies.length - 1
+        );
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (focusedTechIndex >= 0 && filteredTechnologies[focusedTechIndex]) {
+          handleSkillToggle(filteredTechnologies[focusedTechIndex]._id);
+          setTechFilter("");
+          setShowTechDropdown(false);
+          setFocusedTechIndex(-1);
+        }
+        break;
+      case "Escape":
+        setShowTechDropdown(false);
+        setFocusedTechIndex(-1);
+        break;
+    }
+  };
+
+  const removeSkill = (skillId) => {
+    setSelectedSkills((prev) => prev.filter((id) => id !== skillId));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -48,6 +120,11 @@ const SkillsResume = ({ userData, onUpdate }) => {
         resume: response.data.data.resume,
       });
       setMessage("Skills and resume updated successfully!");
+
+      // Reset filter states
+      setTechFilter("");
+      setShowTechDropdown(false);
+      setFocusedTechIndex(-1);
     } catch (error) {
       setMessage(
         error.response?.data?.message || "Error updating skills and resume"
@@ -57,15 +134,8 @@ const SkillsResume = ({ userData, onUpdate }) => {
     }
   };
 
-  const filteredTechnologies = technologies.filter((tech) =>
-    tech.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const selectedTechnologies = technologies.filter((tech) =>
     selectedSkills.includes(tech._id)
-  );
-  const availableTechnologies = technologies.filter(
-    (tech) => !selectedSkills.includes(tech._id)
   );
 
   return (
@@ -102,67 +172,120 @@ const SkillsResume = ({ userData, onUpdate }) => {
                 {selectedTechnologies.map((tech) => (
                   <span
                     key={tech._id}
-                    className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full cursor-pointer hover:bg-blue-200 transition-colors"
-                    onClick={() => handleSkillToggle(tech._id)}
+                    className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
                   >
                     {tech.name}
-                    <svg
-                      className="ml-1 w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    <button
+                      type="button"
+                      onClick={() => removeSkill(tech._id)}
+                      className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-600"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
                   </span>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Search Input */}
-          <div className="mb-3">
+          {/* Technology Filter Input */}
+          <div className="relative">
+            <label
+              htmlFor="skills-filter"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Add Skills
+            </label>
             <input
+              id="skills-filter"
               type="text"
-              placeholder="Search skills..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={techFilter}
+              onChange={handleTechFilterChange}
+              onKeyDown={handleTechFilterKeyDown}
+              onFocus={() => setShowTechDropdown(true)}
+              onBlur={() => {
+                // Delay hiding dropdown to allow clicks
+                setTimeout(() => setShowTechDropdown(false), 150);
+              }}
+              placeholder="Search and select skills..."
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
 
-          {/* Available Skills */}
-          <div className="border border-gray-300 rounded-md p-4 max-h-60 overflow-y-auto">
-            <h4 className="text-sm font-medium text-gray-700 mb-3">
-              Available Skills:
-            </h4>
-            {filteredTechnologies.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                {filteredTechnologies.map((tech) => (
-                  <label
-                    key={tech._id}
-                    className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedSkills.includes(tech._id)}
-                      onChange={() => handleSkillToggle(tech._id)}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="text-sm">{tech.name}</span>
-                  </label>
-                ))}
+            {/* Technology Dropdown */}
+            {showTechDropdown && (
+              <div
+                ref={dropdownRef}
+                className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
+              >
+                {filteredTechnologies.length > 0 ? (
+                  filteredTechnologies.map((tech, index) => {
+                    const isSelected = selectedSkills.includes(tech._id);
+                    const isFocused = index === focusedTechIndex;
+
+                    return (
+                      <div
+                        key={tech._id}
+                        ref={(el) => (focusedItemRefs.current[index] = el)}
+                        onClick={() => {
+                          handleSkillToggle(tech._id);
+                          setTechFilter("");
+                          setShowTechDropdown(false);
+                          setFocusedTechIndex(-1);
+                        }}
+                        className={`px-3 py-2 cursor-pointer flex items-center justify-between ${
+                          isFocused ? "bg-blue-50" : "hover:bg-gray-50"
+                        } ${isSelected ? "bg-blue-100" : ""}`}
+                      >
+                        <span
+                          className={`text-sm ${
+                            isSelected
+                              ? "text-blue-800 font-medium"
+                              : "text-gray-700"
+                          }`}
+                        >
+                          {tech.name}
+                        </span>
+                        {isSelected && (
+                          <svg
+                            className="w-4 h-4 text-blue-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="px-3 py-2 text-sm text-gray-500">
+                    No skills found
+                  </div>
+                )}
               </div>
-            ) : (
-              <p className="text-gray-500 text-sm">
-                No skills found matching your search.
-              </p>
             )}
+
+            <p className="text-xs text-gray-500 mt-1">
+              Use ↑↓ arrow keys to navigate, Enter to select, Esc to close
+            </p>
           </div>
         </div>
 
@@ -201,32 +324,6 @@ const SkillsResume = ({ userData, onUpdate }) => {
           </button>
         </div>
       </form>
-
-      {/* Skills Preview */}
-      {selectedTechnologies.length > 0 && (
-        <div className="bg-gray-50 rounded-lg p-4">
-          <h3 className="text-lg font-medium text-gray-900 mb-3">
-            Skills Preview
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {selectedTechnologies.map((tech) => (
-              <div
-                key={tech._id}
-                className="inline-flex items-center px-3 py-1 bg-white border border-gray-300 rounded-full text-sm"
-              >
-                {tech.image && (
-                  <img
-                    src={tech.image}
-                    alt={tech.name}
-                    className="w-4 h-4 mr-2 rounded"
-                  />
-                )}
-                {tech.name}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

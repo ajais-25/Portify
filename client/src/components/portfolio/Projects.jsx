@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "../../api";
 
 const Projects = ({ userData, onUpdate }) => {
@@ -23,9 +23,27 @@ const Projects = ({ userData, onUpdate }) => {
   const [showTechDropdown, setShowTechDropdown] = useState(false);
   const [focusedTechIndex, setFocusedTechIndex] = useState(-1);
 
+  // Refs for dropdown scrolling
+  const dropdownRef = useRef(null);
+  const focusedItemRefs = useRef([]);
+
   useEffect(() => {
     fetchTechnologies();
   }, []);
+
+  // Scroll focused item into view
+  useEffect(() => {
+    if (
+      focusedTechIndex >= 0 &&
+      showTechDropdown &&
+      focusedItemRefs.current[focusedTechIndex]
+    ) {
+      focusedItemRefs.current[focusedTechIndex].scrollIntoView({
+        block: "nearest",
+        behavior: "smooth",
+      });
+    }
+  }, [focusedTechIndex, showTechDropdown]);
 
   const fetchTechnologies = async () => {
     try {
@@ -411,7 +429,10 @@ const Projects = ({ userData, onUpdate }) => {
 
                     {/* Technology Dropdown */}
                     {showTechDropdown && (
-                      <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto">
+                      <div
+                        ref={dropdownRef}
+                        className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
+                      >
                         {filteredTechnologies.length > 0 ? (
                           filteredTechnologies.map((tech, index) => {
                             const isSelected =
@@ -421,6 +442,9 @@ const Projects = ({ userData, onUpdate }) => {
                             return (
                               <div
                                 key={tech._id}
+                                ref={(el) =>
+                                  (focusedItemRefs.current[index] = el)
+                                }
                                 onClick={() => {
                                   handleTechnologyChange(tech._id);
                                   setTechFilter("");

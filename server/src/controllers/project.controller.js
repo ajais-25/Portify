@@ -46,6 +46,27 @@ const addProject = async (req, res) => {
             });
         }
 
+        if (parsedTechnologies.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Please add at least one technology",
+            });
+        }
+
+        if (parsedKeyFeatures.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Please add at least one key feature",
+            });
+        }
+
+        if (parsedKeyFeatures.length > 3) {
+            return res.status(400).json({
+                success: false,
+                message: "You can only add up to 3 key features",
+            });
+        }
+
         let imageLocalPath = null;
         let uploadedImage = null;
 
@@ -189,17 +210,52 @@ const updateProject = async (req, res) => {
             liveLink,
         } = req.body;
 
+        // Parse JSON strings from FormData
+        let parsedTechnologies;
+        let parsedKeyFeatures;
+
+        try {
+            parsedTechnologies = JSON.parse(technologiesUsed);
+            parsedKeyFeatures = JSON.parse(keyFeatures);
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid format for technologies or key features",
+            });
+        }
+
         if (
             !title ||
             !description ||
-            !technologiesUsed ||
-            !keyFeatures ||
-            !githubLink ||
-            !liveLink
+            !parsedTechnologies ||
+            !parsedKeyFeatures ||
+            !githubLink
         ) {
             return res.status(400).json({
                 success: false,
-                message: "All fields are required",
+                message:
+                    "Title, description, technologies, key features, and GitHub link are required",
+            });
+        }
+
+        if (parsedTechnologies.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Please add at least one technology",
+            });
+        }
+
+        if (parsedKeyFeatures.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Please add at least one key feature",
+            });
+        }
+
+        if (parsedKeyFeatures.length > 3) {
+            return res.status(400).json({
+                success: false,
+                message: "You can only add up to 3 key features",
             });
         }
 
@@ -251,10 +307,10 @@ const updateProject = async (req, res) => {
 
         project.title = title;
         project.description = description;
-        project.technologiesUsed = technologiesUsed;
-        project.keyFeatures = keyFeatures;
+        project.technologiesUsed = parsedTechnologies;
+        project.keyFeatures = parsedKeyFeatures;
         project.githubLink = githubLink;
-        project.liveLink = liveLink;
+        project.liveLink = liveLink || "";
         project.imageURL = uploadedImage.secure_url;
 
         await project.save({ validateBeforeSave: false });
@@ -296,9 +352,19 @@ const deleteProject = async (req, res) => {
             });
         }
 
-        await deleteFromCloudinary(
-            project.imageURL.split("/").pop().split(".")[0]
-        );
+        // Delete image from cloudinary if it exists
+        if (project.imageURL) {
+            try {
+                const publicId = project.imageURL
+                    .split("/")
+                    .pop()
+                    .split(".")[0];
+                await deleteFromCloudinary(publicId);
+            } catch (error) {
+                console.error("Error deleting image from cloudinary:", error);
+                // Continue with project deletion even if image deletion fails
+            }
+        }
 
         const user = await User.findById(project.userId);
         if (user) {

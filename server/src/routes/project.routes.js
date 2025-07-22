@@ -14,17 +14,14 @@ const router = Router();
 
 router.use(verifyUser);
 
-router
-    .route("/")
-    .post(upload.single("imageURL"), addProject)
-    .get(getUserProjects);
+router.route("/").post(upload.single("image"), addProject).get(getUserProjects);
 
 router.get("/all", getAllProjects);
 
 router
     .route("/:id")
     .get(getProjectById)
-    .put(upload.single("imageURL"), updateProject)
+    .put(upload.single("image"), updateProject)
     .delete(deleteProject);
 
 export default router;

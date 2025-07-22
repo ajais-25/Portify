@@ -25,7 +25,7 @@ import portfolioRoutes from "./routes/portfolio.routes.js";
 // Routes declaration
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/technologies", technologyRoutes);
-app.use("/api/v1/projects", projectRoutes);
+app.use("/api/v1/project", projectRoutes);
 app.use("/api/v1/portfolio", portfolioRoutes);
 
 export default app;

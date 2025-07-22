@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import api from "../../api";
 
 const Projects = ({ userData, onUpdate }) => {
-  const [projects, setProjects] = useState(userData?.projects || []);
   const [technologies, setTechnologies] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
@@ -18,6 +17,11 @@ const Projects = ({ userData, onUpdate }) => {
     liveLink: "",
     image: null,
   });
+
+  // Technology filter states
+  const [techFilter, setTechFilter] = useState("");
+  const [showTechDropdown, setShowTechDropdown] = useState(false);
+  const [focusedTechIndex, setFocusedTechIndex] = useState(-1);
 
   useEffect(() => {
     fetchTechnologies();
@@ -44,6 +48,10 @@ const Projects = ({ userData, onUpdate }) => {
     });
     setEditingProject(null);
     setShowForm(false);
+    // Reset tech filter states
+    setTechFilter("");
+    setShowTechDropdown(false);
+    setFocusedTechIndex(-1);
   };
 
   const handleInputChange = (e) => {
@@ -70,6 +78,64 @@ const Projects = ({ userData, onUpdate }) => {
     }));
   };
 
+  // Filter technologies based on search input and exclude already selected ones
+  const filteredTechnologies = technologies.filter(
+    (tech) =>
+      tech.name.toLowerCase().includes(techFilter.toLowerCase()) &&
+      !formData.technologiesUsed.includes(tech._id)
+  );
+
+  // Get selected technology objects for display
+  const selectedTechnologies = technologies.filter((tech) =>
+    formData.technologiesUsed.includes(tech._id)
+  );
+
+  // Handle technology filter input and keyboard navigation
+  const handleTechFilterChange = (e) => {
+    setTechFilter(e.target.value);
+    setShowTechDropdown(true);
+    setFocusedTechIndex(-1);
+  };
+
+  const handleTechFilterKeyDown = (e) => {
+    if (!showTechDropdown) return;
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setFocusedTechIndex((prev) =>
+          prev < filteredTechnologies.length - 1 ? prev + 1 : 0
+        );
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setFocusedTechIndex((prev) =>
+          prev > 0 ? prev - 1 : filteredTechnologies.length - 1
+        );
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (focusedTechIndex >= 0 && filteredTechnologies[focusedTechIndex]) {
+          handleTechnologyChange(filteredTechnologies[focusedTechIndex]._id);
+          setTechFilter("");
+          setShowTechDropdown(false);
+          setFocusedTechIndex(-1);
+        }
+        break;
+      case "Escape":
+        setShowTechDropdown(false);
+        setFocusedTechIndex(-1);
+        break;
+    }
+  };
+
+  const removeTechnology = (techId) => {
+    setFormData((prev) => ({
+      ...prev,
+      technologiesUsed: prev.technologiesUsed.filter((id) => id !== techId),
+    }));
+  };
+
   const handleKeyFeatureChange = (index, value) => {
     const newFeatures = [...formData.keyFeatures];
     newFeatures[index] = value;
@@ -80,10 +146,12 @@ const Projects = ({ userData, onUpdate }) => {
   };
 
   const addKeyFeature = () => {
-    setFormData((prev) => ({
-      ...prev,
-      keyFeatures: [...prev.keyFeatures, ""],
-    }));
+    if (formData.keyFeatures.length < 3) {
+      setFormData((prev) => ({
+        ...prev,
+        keyFeatures: [...prev.keyFeatures, ""],
+      }));
+    }
   };
 
   const removeKeyFeature = (index) => {
@@ -102,10 +170,15 @@ const Projects = ({ userData, onUpdate }) => {
     if (
       !formData.title.trim() ||
       !formData.description.trim() ||
-      !formData.githubLink.trim() ||
-      formData.technologiesUsed.length === 0
+      !formData.githubLink.trim()
     ) {
       setMessage("Please fill in all required fields");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.technologiesUsed.length === 0) {
+      setMessage("Please select at least one technology");
       setLoading(false);
       return;
     }
@@ -115,6 +188,12 @@ const Projects = ({ userData, onUpdate }) => {
     );
     if (filteredFeatures.length === 0) {
       setMessage("Please add at least one key feature");
+      setLoading(false);
+      return;
+    }
+
+    if (filteredFeatures.length > 3) {
+      setMessage("Key features cannot exceed 3 items");
       setLoading(false);
       return;
     }
@@ -135,7 +214,7 @@ const Projects = ({ userData, onUpdate }) => {
         formDataToSend.append("image", formData.image);
       }
 
-      const response = editingProject
+      editingProject
         ? await api.put(`/project/${editingProject._id}`, formDataToSend, {
             headers: { "Content-Type": "multipart/form-data" },
           })
@@ -170,6 +249,10 @@ const Projects = ({ userData, onUpdate }) => {
     });
     setEditingProject(project);
     setShowForm(true);
+    // Reset tech filter states
+    setTechFilter("");
+    setShowTechDropdown(false);
+    setFocusedTechIndex(-1);
   };
 
   const handleDelete = async (projectId) => {
@@ -184,10 +267,6 @@ const Projects = ({ userData, onUpdate }) => {
       setMessage(error.response?.data?.message || "Error deleting project");
     }
   };
-
-  const filteredTechnologies = technologies.filter(
-    (tech) => !formData.technologiesUsed.includes(tech._id)
-  );
 
   return (
     <div className="space-y-6">
@@ -280,27 +359,122 @@ const Projects = ({ userData, onUpdate }) => {
                   <label className="block text-sm font-medium text-gray-700">
                     Technologies Used *
                   </label>
-                  <div className="mt-2 max-h-40 overflow-y-auto border border-gray-300 rounded-md p-3">
-                    {technologies.map((tech) => (
-                      <label
-                        key={tech._id}
-                        className="flex items-center space-x-2 mb-2"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={formData.technologiesUsed.includes(tech._id)}
-                          onChange={() => handleTechnologyChange(tech._id)}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-sm">{tech.name}</span>
-                      </label>
-                    ))}
+
+                  {/* Selected Technologies Display */}
+                  {selectedTechnologies.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {selectedTechnologies.map((tech) => (
+                        <span
+                          key={tech._id}
+                          className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
+                        >
+                          {tech.name}
+                          <button
+                            type="button"
+                            onClick={() => removeTechnology(tech._id)}
+                            className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-600"
+                          >
+                            <svg
+                              className="w-3 h-3"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Technology Filter Input */}
+                  <div className="mt-2 relative">
+                    <input
+                      type="text"
+                      value={techFilter}
+                      onChange={handleTechFilterChange}
+                      onKeyDown={handleTechFilterKeyDown}
+                      onFocus={() => setShowTechDropdown(true)}
+                      onBlur={() => {
+                        // Delay hiding dropdown to allow clicks
+                        setTimeout(() => setShowTechDropdown(false), 150);
+                      }}
+                      placeholder="Search and select technologies..."
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+
+                    {/* Technology Dropdown */}
+                    {showTechDropdown && (
+                      <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto">
+                        {filteredTechnologies.length > 0 ? (
+                          filteredTechnologies.map((tech, index) => {
+                            const isSelected =
+                              formData.technologiesUsed.includes(tech._id);
+                            const isFocused = index === focusedTechIndex;
+
+                            return (
+                              <div
+                                key={tech._id}
+                                onClick={() => {
+                                  handleTechnologyChange(tech._id);
+                                  setTechFilter("");
+                                  setShowTechDropdown(false);
+                                  setFocusedTechIndex(-1);
+                                }}
+                                className={`px-3 py-2 cursor-pointer flex items-center justify-between ${
+                                  isFocused ? "bg-blue-50" : "hover:bg-gray-50"
+                                } ${isSelected ? "bg-blue-100" : ""}`}
+                              >
+                                <span
+                                  className={`text-sm ${
+                                    isSelected
+                                      ? "text-blue-800 font-medium"
+                                      : "text-gray-700"
+                                  }`}
+                                >
+                                  {tech.name}
+                                </span>
+                                {isSelected && (
+                                  <svg
+                                    className="w-4 h-4 text-blue-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M5 13l4 4L19 7"
+                                    />
+                                  </svg>
+                                )}
+                              </div>
+                            );
+                          })
+                        ) : (
+                          <div className="px-3 py-2 text-sm text-gray-500">
+                            No technologies found
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
+
+                  <p className="text-xs text-gray-500 mt-1">
+                    Use ↑↓ arrow keys to navigate, Enter to select, Esc to close
+                  </p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Key Features *
+                    Key Features * (Maximum 3)
                   </label>
                   {formData.keyFeatures.map((feature, index) => (
                     <div
@@ -339,13 +513,18 @@ const Projects = ({ userData, onUpdate }) => {
                       )}
                     </div>
                   ))}
-                  <button
-                    type="button"
-                    onClick={addKeyFeature}
-                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
-                  >
-                    + Add Feature
-                  </button>
+                  {formData.keyFeatures.length < 3 && (
+                    <button
+                      type="button"
+                      onClick={addKeyFeature}
+                      className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                    >
+                      + Add Feature
+                    </button>
+                  )}
+                  <p className="text-xs text-gray-500 mt-1">
+                    {formData.keyFeatures.length}/3 features added
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -381,26 +560,48 @@ const Projects = ({ userData, onUpdate }) => {
                   <label className="block text-sm font-medium text-gray-700">
                     Project Image
                   </label>
+
+                  {/* Show current image when editing */}
+                  {editingProject && editingProject.imageURL && (
+                    <div className="mt-2 mb-3">
+                      <p className="text-sm text-gray-600 mb-2">
+                        Current image:
+                      </p>
+                      <img
+                        src={editingProject.imageURL}
+                        alt={editingProject.title}
+                        className="w-32 h-32 object-cover rounded-lg border border-gray-300"
+                      />
+                    </div>
+                  )}
+
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
                     className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                   />
+
+                  {editingProject && editingProject.imageURL && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      Upload a new image to replace the current one, or leave
+                      empty to keep the existing image.
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex justify-end space-x-3">
                   <button
                     type="button"
                     onClick={resetForm}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
                   >
                     {loading
                       ? "Saving..."
@@ -437,7 +638,7 @@ const Projects = ({ userData, onUpdate }) => {
               </p>
 
               <div className="flex flex-wrap gap-1 mb-3">
-                {project.technologiesUsed?.slice(0, 3).map((tech) => (
+                {project.technologiesUsed?.map((tech) => (
                   <span
                     key={tech._id}
                     className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
@@ -445,12 +646,24 @@ const Projects = ({ userData, onUpdate }) => {
                     {tech.name}
                   </span>
                 ))}
-                {project.technologiesUsed?.length > 3 && (
-                  <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                    +{project.technologiesUsed.length - 3} more
-                  </span>
-                )}
               </div>
+
+              {/* Key Features */}
+              {project.keyFeatures && project.keyFeatures.length > 0 && (
+                <div className="mb-3">
+                  <h4 className="text-sm font-medium text-gray-700 mb-1">
+                    Key Features:
+                  </h4>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    {project.keyFeatures.map((feature, index) => (
+                      <li key={index} className="flex items-start">
+                        <span className="mr-1">•</span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               <div className="flex justify-between items-center">
                 <div className="flex space-x-2">

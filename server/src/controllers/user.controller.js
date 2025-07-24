@@ -312,6 +312,84 @@ const updateUserExperience = async (req, res) => {
         });
     }
 
+    // Validate each experience entry
+    for (let i = 0; i < experience.length; i++) {
+        const exp = experience[i];
+        const missingFields = [];
+
+        if (!exp.company || exp.company.trim() === "") {
+            missingFields.push("company");
+        }
+        if (!exp.position || exp.position.trim() === "") {
+            missingFields.push("position");
+        }
+        if (!exp.startDate || exp.startDate.trim() === "") {
+            missingFields.push("startDate");
+        }
+        if (
+            !exp.responsibilities ||
+            !Array.isArray(exp.responsibilities) ||
+            exp.responsibilities.length === 0
+        ) {
+            missingFields.push("responsibilities");
+        }
+
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Experience entry ${i + 1} is missing required fields: ${missingFields.join(", ")}`,
+            });
+        }
+
+        // Validate responsibilities array
+        for (let j = 0; j < exp.responsibilities.length; j++) {
+            if (
+                !exp.responsibilities[j] ||
+                exp.responsibilities[j].trim() === ""
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Experience entry ${i + 1} has empty responsibility at position ${j + 1}`,
+                });
+            }
+        }
+
+        // Validate date format and logic (MM/YYYY)
+        const dateRegex = /^(0[1-9]|1[0-2])\/\d{4}$/;
+
+        if (!dateRegex.test(exp.startDate)) {
+            return res.status(400).json({
+                success: false,
+                message: `Experience entry ${i + 1} has invalid start date format. Expected format: MM/YYYY`,
+            });
+        }
+
+        if (exp.endDate && exp.endDate.trim() !== "") {
+            if (!dateRegex.test(exp.endDate)) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Experience entry ${i + 1} has invalid end date format. Expected format: MM/YYYY`,
+                });
+            }
+
+            // Compare dates (convert MM/YYYY to comparable format)
+            const [startMonth, startYear] = exp.startDate
+                .split("/")
+                .map(Number);
+            const [endMonth, endYear] = exp.endDate.split("/").map(Number);
+
+            const startDate = new Date(startYear, startMonth - 1);
+            const endDate = new Date(endYear, endMonth - 1);
+
+            if (endDate <= startDate) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Experience entry ${i + 1}: end date must be greater than start date`,
+                });
+            }
+        }
+    }
+
     try {
         const userId = req.user._id;
 

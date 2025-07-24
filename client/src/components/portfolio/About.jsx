@@ -61,7 +61,7 @@ const About = ({ userData, onUpdate }) => {
             htmlFor="whatAreYou"
             className="block text-sm font-medium text-gray-700"
           >
-            tagline*
+            Tagline*
           </label>
           <input
             type="text"

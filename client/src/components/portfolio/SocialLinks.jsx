@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../api";
+import { toast } from "react-toastify";
 
 const SocialLinks = ({ userData, onUpdate }) => {
   const [formData, setFormData] = useState({
@@ -9,7 +10,6 @@ const SocialLinks = ({ userData, onUpdate }) => {
     website: userData?.socialLinks?.website || "",
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [hasChanges, setHasChanges] = useState(false);
 
   // Track changes when userData is updated
@@ -43,10 +43,9 @@ const SocialLinks = ({ userData, onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
 
     if (!formData.github.trim()) {
-      setMessage("GitHub link is required");
+      toast.error("GitHub link is required");
       setLoading(false);
       return;
     }
@@ -54,9 +53,9 @@ const SocialLinks = ({ userData, onUpdate }) => {
     try {
       const response = await api.put("/users/profile/social-links", formData);
       onUpdate("socialLinks", { socialLinks: response.data.data });
-      setMessage("Social links updated successfully!");
+      toast.success("Social links updated successfully!");
     } catch (error) {
-      setMessage(
+      toast.error(
         error.response?.data?.message || "Error updating social links"
       );
     } finally {
@@ -72,18 +71,6 @@ const SocialLinks = ({ userData, onUpdate }) => {
           Add your social media profiles and personal website.
         </p>
       </div>
-
-      {message && (
-        <div
-          className={`p-4 rounded-md ${
-            message.includes("successfully")
-              ? "bg-green-50 text-green-700 border border-green-200"
-              : "bg-red-50 text-red-700 border border-red-200"
-          }`}
-        >
-          {message}
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>

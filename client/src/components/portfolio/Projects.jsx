@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import api from "../../api";
+import { toast } from "react-toastify";
 
 const Projects = ({ userData, onUpdate }) => {
   const [technologies, setTechnologies] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [hasChanges, setHasChanges] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -215,7 +215,6 @@ const Projects = ({ userData, onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
 
     // Validation
     if (
@@ -223,13 +222,13 @@ const Projects = ({ userData, onUpdate }) => {
       !formData.description.trim() ||
       !formData.githubLink.trim()
     ) {
-      setMessage("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       setLoading(false);
       return;
     }
 
     if (formData.technologiesUsed.length === 0) {
-      setMessage("Please select at least one technology");
+      toast.error("Please select at least one technology");
       setLoading(false);
       return;
     }
@@ -238,13 +237,13 @@ const Projects = ({ userData, onUpdate }) => {
       (feature) => feature.trim() !== ""
     );
     if (filteredFeatures.length === 0) {
-      setMessage("Please add at least one key feature");
+      toast.error("Please add at least one key feature");
       setLoading(false);
       return;
     }
 
     if (filteredFeatures.length > 3) {
-      setMessage("Key features cannot exceed 3 items");
+      toast.error("Key features cannot exceed 3 items");
       setLoading(false);
       return;
     }
@@ -273,13 +272,13 @@ const Projects = ({ userData, onUpdate }) => {
             headers: { "Content-Type": "multipart/form-data" },
           });
 
-      setMessage(
+      toast.success(
         `Project ${editingProject ? "updated" : "added"} successfully!`
       );
       onUpdate(); // Refresh the user data
       resetForm();
     } catch (error) {
-      setMessage(
+      toast.error(
         error.response?.data?.message ||
           `Error ${editingProject ? "updating" : "adding"} project`
       );
@@ -312,10 +311,10 @@ const Projects = ({ userData, onUpdate }) => {
 
     try {
       await api.delete(`/project/${projectId}`);
-      setMessage("Project deleted successfully!");
+      toast.success("Project deleted successfully!");
       onUpdate(); // Refresh the user data
     } catch (error) {
-      setMessage(error.response?.data?.message || "Error deleting project");
+      toast.error(error.response?.data?.message || "Error deleting project");
     }
   };
 
@@ -335,18 +334,6 @@ const Projects = ({ userData, onUpdate }) => {
           Add Project
         </button>
       </div>
-
-      {message && (
-        <div
-          className={`p-4 rounded-md ${
-            message.includes("successfully")
-              ? "bg-green-50 text-green-700 border border-green-200"
-              : "bg-red-50 text-red-700 border border-red-200"
-          }`}
-        >
-          {message}
-        </div>
-      )}
 
       {/* Project Form Modal */}
       {showForm && (

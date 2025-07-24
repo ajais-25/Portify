@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import api from "../../api";
+import { toast } from "react-toastify";
 
 const SkillsResume = ({ userData, onUpdate }) => {
   const [technologies, setTechnologies] = useState([]);
@@ -8,7 +9,6 @@ const SkillsResume = ({ userData, onUpdate }) => {
   );
   const [resume, setResume] = useState(userData?.resume || "");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [hasChanges, setHasChanges] = useState(false);
 
   // Technology filter states
@@ -128,7 +128,6 @@ const SkillsResume = ({ userData, onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
 
     try {
       const response = await api.put("/users/profile/skills-resume", {
@@ -140,14 +139,14 @@ const SkillsResume = ({ userData, onUpdate }) => {
         skills: response.data.data.skills,
         resume: response.data.data.resume,
       });
-      setMessage("Skills and resume updated successfully!");
+      toast.success("Skills and resume updated successfully!");
 
       // Reset filter states
       setTechFilter("");
       setShowTechDropdown(false);
       setFocusedTechIndex(-1);
     } catch (error) {
-      setMessage(
+      toast.error(
         error.response?.data?.message || "Error updating skills and resume"
       );
     } finally {
@@ -167,18 +166,6 @@ const SkillsResume = ({ userData, onUpdate }) => {
           Select your skills and add your resume link.
         </p>
       </div>
-
-      {message && (
-        <div
-          className={`p-4 rounded-md ${
-            message.includes("successfully")
-              ? "bg-green-50 text-green-700 border border-green-200"
-              : "bg-red-50 text-red-700 border border-red-200"
-          }`}
-        >
-          {message}
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Skills Section */}

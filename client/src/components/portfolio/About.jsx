@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../api";
+import { toast } from "react-toastify";
 
 const About = ({ userData, onUpdate }) => {
   const [formData, setFormData] = useState({
@@ -7,7 +8,6 @@ const About = ({ userData, onUpdate }) => {
     description: userData?.description || "",
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [hasChanges, setHasChanges] = useState(false);
 
   // Track changes when userData is updated
@@ -37,14 +37,13 @@ const About = ({ userData, onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
 
     try {
       const response = await api.put("/users/profile/about", formData);
       onUpdate("about", response.data.data);
-      setMessage("About section updated successfully!");
+      toast.success("About section updated successfully!");
     } catch (error) {
-      setMessage(
+      toast.error(
         error.response?.data?.message || "Error updating about section"
       );
     } finally {
@@ -60,18 +59,6 @@ const About = ({ userData, onUpdate }) => {
           Tell people about yourself and your professional background.
         </p>
       </div>
-
-      {message && (
-        <div
-          className={`p-4 rounded-md ${
-            message.includes("successfully")
-              ? "bg-green-50 text-green-700 border border-green-200"
-              : "bg-red-50 text-red-700 border border-red-200"
-          }`}
-        >
-          {message}
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>

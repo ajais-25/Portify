@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import api from "../api";
 import { useAuth } from "../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -105,17 +106,19 @@ const Login = () => {
         // Use the login function from auth context
         login(token, data);
 
+        toast.success("Logged in successfully!");
+
         // Redirect to the intended page or home
         navigate(from, { replace: true });
       } else {
-        setErrors({ submit: response.data.message || "Login failed" });
+        toast.error(response.data.message || "Login failed");
         return;
       }
 
       // console.log(response.data);
     } catch (error) {
       console.error("Login error:", error);
-      setErrors({ submit: "Invalid email or password" });
+      toast.error("Invalid email or password");
     } finally {
       setIsLoading(false);
     }
@@ -140,14 +143,16 @@ const Login = () => {
         // Use the login function from auth context
         login(token, data);
 
+        toast.success("Demo login successful!");
+
         // Redirect to the intended page or home
         navigate(from, { replace: true });
       } else {
-        setErrors({ submit: response.data.message || "Demo login failed" });
+        toast.error(response.data.message || "Demo login failed");
       }
     } catch (error) {
       console.error("Demo login error:", error);
-      setErrors({ submit: "Demo login failed. Please try again." });
+      toast.error("Demo login failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -199,11 +204,6 @@ const Login = () => {
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
-            {errors.submit && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
-                {errors.submit}
-              </div>
-            )}
             <div>
               <label
                 htmlFor="email"

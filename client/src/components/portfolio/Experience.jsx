@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import api from "../../api";
+import { toast } from "react-toastify";
 
 const Experience = ({ userData, onUpdate }) => {
   const [experience, setExperience] = useState(userData?.experience || []);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [hasChanges, setHasChanges] = useState(false);
 
   // Track changes when userData is updated
@@ -124,7 +124,6 @@ const Experience = ({ userData, onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
 
     // Filter out empty experience entries and clean responsibilities
     const validExperience = experience
@@ -142,9 +141,9 @@ const Experience = ({ userData, onUpdate }) => {
       });
 
       onUpdate("experience", { experience: response.data.data });
-      setMessage("Experience updated successfully!");
+      toast.success("Experience updated successfully!");
     } catch (error) {
-      setMessage(error.response?.data?.message || "Error updating experience");
+      toast.error(error.response?.data?.message || "Error updating experience");
     } finally {
       setLoading(false);
     }
@@ -167,18 +166,6 @@ const Experience = ({ userData, onUpdate }) => {
           Add Experience
         </button>
       </div>
-
-      {message && (
-        <div
-          className={`p-4 rounded-md ${
-            message.includes("successfully")
-              ? "bg-green-50 text-green-700 border border-green-200"
-              : "bg-red-50 text-red-700 border border-red-200"
-          }`}
-        >
-          {message}
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {experience.length === 0 ? (

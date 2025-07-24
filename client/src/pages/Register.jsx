@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -127,10 +128,12 @@ const Register = () => {
         // Use the login function from auth context to automatically sign in the user
         login(token, data);
 
+        toast.success("Registration successful! Welcome to Portify!");
+
         // Redirect to home page
         navigate("/", { replace: true });
       } else {
-        setErrors({ submit: response.data.message || "Registration failed" });
+        toast.error(response.data.message || "Registration failed");
         return;
       }
 
@@ -138,9 +141,9 @@ const Register = () => {
     } catch (error) {
       console.error("Registration error:", error);
       if (error.response?.data?.message) {
-        setErrors({ submit: error.response.data.message });
+        toast.error(error.response.data.message);
       } else {
-        setErrors({ submit: "Registration failed. Please try again." });
+        toast.error("Registration failed. Please try again.");
       }
     } finally {
       setIsLoading(false);
@@ -193,12 +196,6 @@ const Register = () => {
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
-            {errors.submit && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
-                {errors.submit}
-              </div>
-            )}
-
             <div>
               <label
                 htmlFor="name"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../api";
 
 const SocialLinks = ({ userData, onUpdate }) => {
@@ -10,6 +10,28 @@ const SocialLinks = ({ userData, onUpdate }) => {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Track changes when userData is updated
+  useEffect(() => {
+    setFormData({
+      github: userData?.socialLinks?.github || "",
+      linkedin: userData?.socialLinks?.linkedin || "",
+      twitter: userData?.socialLinks?.twitter || "",
+      website: userData?.socialLinks?.website || "",
+    });
+    setHasChanges(false);
+  }, [userData]);
+
+  // Check for changes whenever formData changes
+  useEffect(() => {
+    const hasModifications =
+      formData.github !== (userData?.socialLinks?.github || "") ||
+      formData.linkedin !== (userData?.socialLinks?.linkedin || "") ||
+      formData.twitter !== (userData?.socialLinks?.twitter || "") ||
+      formData.website !== (userData?.socialLinks?.website || "");
+    setHasChanges(hasModifications);
+  }, [formData, userData]);
 
   const handleChange = (e) => {
     setFormData({
@@ -197,7 +219,7 @@ const SocialLinks = ({ userData, onUpdate }) => {
         <div className="flex justify-end">
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !hasChanges}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? "Saving..." : "Save Changes"}

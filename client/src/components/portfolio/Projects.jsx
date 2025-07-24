@@ -7,6 +7,7 @@ const Projects = ({ userData, onUpdate }) => {
   const [editingProject, setEditingProject] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [hasChanges, setHasChanges] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -45,6 +46,37 @@ const Projects = ({ userData, onUpdate }) => {
     }
   }, [focusedTechIndex, showTechDropdown]);
 
+  // Track changes in form data
+  useEffect(() => {
+    if (!editingProject) {
+      // For new projects, check if any field has data
+      const hasData =
+        formData.title.trim() !== "" ||
+        formData.description.trim() !== "" ||
+        formData.technologiesUsed.length > 0 ||
+        formData.keyFeatures.some((feature) => feature.trim() !== "") ||
+        formData.githubLink.trim() !== "" ||
+        formData.liveLink.trim() !== "" ||
+        formData.image !== null;
+      setHasChanges(hasData);
+    } else {
+      // For editing projects, check if any field has changed
+      const hasModifications =
+        formData.title !== editingProject.title ||
+        formData.description !== editingProject.description ||
+        JSON.stringify(formData.technologiesUsed.sort()) !==
+          JSON.stringify(
+            editingProject.technologiesUsed.map((tech) => tech._id).sort()
+          ) ||
+        JSON.stringify(formData.keyFeatures) !==
+          JSON.stringify(editingProject.keyFeatures) ||
+        formData.githubLink !== editingProject.githubLink ||
+        formData.liveLink !== (editingProject.liveLink || "") ||
+        formData.image !== null;
+      setHasChanges(hasModifications);
+    }
+  }, [formData, editingProject]);
+
   const fetchTechnologies = async () => {
     try {
       const response = await api.get("/technologies");
@@ -66,6 +98,7 @@ const Projects = ({ userData, onUpdate }) => {
     });
     setEditingProject(null);
     setShowForm(false);
+    setHasChanges(false);
     // Reset tech filter states
     setTechFilter("");
     setShowTechDropdown(false);
@@ -624,7 +657,7 @@ const Projects = ({ userData, onUpdate }) => {
                   </button>
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !hasChanges}
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
                   >
                     {loading

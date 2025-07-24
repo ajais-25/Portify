@@ -1,10 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../api";
 
 const Experience = ({ userData, onUpdate }) => {
   const [experience, setExperience] = useState(userData?.experience || []);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Track changes when userData is updated
+  useEffect(() => {
+    setExperience(userData?.experience || []);
+    setHasChanges(false);
+  }, [userData]);
+
+  // Check for changes whenever experience changes
+  useEffect(() => {
+    const originalExperience = userData?.experience || [];
+
+    // Check if the arrays are different in length or content
+    const hasModifications =
+      experience.length !== originalExperience.length ||
+      experience.some((exp, index) => {
+        const original = originalExperience[index];
+        if (!original) return true;
+
+        return (
+          exp.company !== original.company ||
+          exp.position !== original.position ||
+          exp.startDate !== original.startDate ||
+          exp.endDate !== original.endDate ||
+          JSON.stringify(exp.responsibilities) !==
+            JSON.stringify(original.responsibilities)
+        );
+      });
+
+    setHasChanges(hasModifications);
+  }, [experience, userData]);
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
@@ -388,17 +419,15 @@ const Experience = ({ userData, onUpdate }) => {
           </div>
         )}
 
-        {experience.length > 0 && (
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Saving..." : "Save Changes"}
-            </button>
-          </div>
-        )}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            disabled={loading || !hasChanges}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            {loading ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../api";
 
 const About = ({ userData, onUpdate }) => {
@@ -8,6 +8,24 @@ const About = ({ userData, onUpdate }) => {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Track changes when userData is updated
+  useEffect(() => {
+    setFormData({
+      tagline: userData?.tagline || "",
+      description: userData?.description || "",
+    });
+    setHasChanges(false);
+  }, [userData]);
+
+  // Check for changes whenever formData changes
+  useEffect(() => {
+    const hasModifications =
+      formData.tagline !== (userData?.tagline || "") ||
+      formData.description !== (userData?.description || "");
+    setHasChanges(hasModifications);
+  }, [formData, userData]);
 
   const handleChange = (e) => {
     setFormData({
@@ -96,7 +114,7 @@ const About = ({ userData, onUpdate }) => {
         <div className="flex justify-end">
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !hasChanges}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? "Saving..." : "Save Changes"}

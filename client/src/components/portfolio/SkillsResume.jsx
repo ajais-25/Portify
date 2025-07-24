@@ -9,6 +9,7 @@ const SkillsResume = ({ userData, onUpdate }) => {
   const [resume, setResume] = useState(userData?.resume || "");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [hasChanges, setHasChanges] = useState(false);
 
   // Technology filter states
   const [techFilter, setTechFilter] = useState("");
@@ -22,6 +23,26 @@ const SkillsResume = ({ userData, onUpdate }) => {
   useEffect(() => {
     fetchTechnologies();
   }, []);
+
+  // Track changes when userData is updated
+  useEffect(() => {
+    setSelectedSkills(userData?.skills?.map((skill) => skill._id) || []);
+    setResume(userData?.resume || "");
+    setHasChanges(false);
+  }, [userData]);
+
+  // Check for changes whenever selectedSkills or resume changes
+  useEffect(() => {
+    const originalSkills = userData?.skills?.map((skill) => skill._id) || [];
+    const hasSkillChanges =
+      selectedSkills.length !== originalSkills.length ||
+      selectedSkills.some((skill) => !originalSkills.includes(skill)) ||
+      originalSkills.some((skill) => !selectedSkills.includes(skill));
+
+    const hasResumeChanges = resume !== (userData?.resume || "");
+
+    setHasChanges(hasSkillChanges || hasResumeChanges);
+  }, [selectedSkills, resume, userData]);
 
   // Scroll focused item into view
   useEffect(() => {
@@ -317,7 +338,7 @@ const SkillsResume = ({ userData, onUpdate }) => {
         <div className="flex justify-end">
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !hasChanges}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? "Saving..." : "Save Changes"}

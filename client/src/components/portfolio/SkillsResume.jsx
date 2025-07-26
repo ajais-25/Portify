@@ -223,9 +223,11 @@ const SkillsResume = ({ userData, onUpdate }) => {
               onChange={handleTechFilterChange}
               onKeyDown={handleTechFilterKeyDown}
               onFocus={() => setShowTechDropdown(true)}
-              onBlur={() => {
-                // Delay hiding dropdown to allow clicks
-                setTimeout(() => setShowTechDropdown(false), 150);
+              onBlur={(e) => {
+                // Don't hide dropdown if clicking on a dropdown item
+                if (!dropdownRef.current?.contains(e.relatedTarget)) {
+                  setTimeout(() => setShowTechDropdown(false), 200);
+                }
               }}
               placeholder="Search and select skills..."
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -246,7 +248,8 @@ const SkillsResume = ({ userData, onUpdate }) => {
                       <div
                         key={tech._id}
                         ref={(el) => (focusedItemRefs.current[index] = el)}
-                        onClick={() => {
+                        onMouseDown={(e) => {
+                          e.preventDefault(); // Prevent blur event
                           handleSkillToggle(tech._id);
                           setTechFilter("");
                           setShowTechDropdown(false);

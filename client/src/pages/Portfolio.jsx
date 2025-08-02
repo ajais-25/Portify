@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ChevronDown, Mail, ExternalLink, Code } from "lucide-react";
+import { ChevronDown, Mail, ExternalLink, Code, Globe } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import api from "../api";
@@ -51,7 +51,9 @@ const Portfolio = () => {
         "home",
         "about",
         "skills",
-        "experience",
+        ...(portfolioData?.experience && portfolioData.experience.length > 0
+          ? ["experience"]
+          : []),
         "projects",
         "contact",
       ];
@@ -138,7 +140,10 @@ const Portfolio = () => {
                     "Home",
                     "About",
                     "Skills",
-                    "Experience",
+                    ...(portfolioData.experience &&
+                    portfolioData.experience.length > 0
+                      ? ["Experience"]
+                      : []),
                     "Projects",
                     "Contact",
                   ].map((item) => (
@@ -177,30 +182,46 @@ const Portfolio = () => {
                   {portfolioData.tagline}
                 </p>
                 <div className="flex justify-center space-x-6 mb-12">
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
-                  >
-                    <FaGithub size={26} />
-                  </Link>
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
-                  >
-                    <FaLinkedin size={26} />
-                  </Link>
-                  <Link
-                    to="#"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
-                  >
-                    <FaXTwitter size={26} />
-                  </Link>
-                  <Link
-                    to={`mailto:john@example.com`}
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
-                  >
-                    <Mail size={26} />
-                  </Link>
+                  {portfolioData.socialLinks?.github && (
+                    <Link
+                      to={portfolioData.socialLinks.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                    >
+                      <FaGithub size={26} />
+                    </Link>
+                  )}
+                  {portfolioData.socialLinks?.linkedin && (
+                    <Link
+                      to={portfolioData.socialLinks.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                    >
+                      <FaLinkedin size={26} />
+                    </Link>
+                  )}
+                  {portfolioData.socialLinks?.twitter && (
+                    <Link
+                      to={portfolioData.socialLinks.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                    >
+                      <FaXTwitter size={26} />
+                    </Link>
+                  )}
+                  {portfolioData.socialLinks?.website && (
+                    <Link
+                      to={portfolioData.socialLinks.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                    >
+                      <Globe size={26} />
+                    </Link>
+                  )}
                 </div>
                 <button
                   onClick={() => scrollToSection("about")}
@@ -294,134 +315,276 @@ const Portfolio = () => {
           </section>
 
           {/* Experience Section */}
-          <section id="experience" className="py-20 px-6">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold mb-6">
-                  Professional Experience
-                </h2>
-                <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
-              </div>
-              <div className="space-y-8">
-                {portfolioData.experience.map((experience, index) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
+          {portfolioData.experience && portfolioData.experience.length > 0 && (
+            <section id="experience" className="py-20 px-6">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold mb-6">
+                    Professional Experience
+                  </h2>
+                  <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
+                </div>
+                <div className="space-y-8">
+                  {portfolioData.experience.map((experience, index) => (
+                    <div
+                      key={index}
+                      className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
+                    >
+                      <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
+                        <div>
+                          <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                            {experience.position}
+                          </h3>
+                          <h4 className="text-xl text-blue-600 font-medium mb-2">
+                            {experience.company}
+                          </h4>
+                        </div>
+                        <div className="text-gray-600 font-medium">
+                          <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+                            {experience.startDate} - {experience.endDate}
+                          </span>
+                        </div>
+                      </div>
                       <div>
-                        <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                          {experience.position}
-                        </h3>
-                        <h4 className="text-xl text-blue-600 font-medium mb-2">
-                          {experience.company}
-                        </h4>
-                      </div>
-                      <div className="text-gray-600 font-medium">
-                        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-                          {experience.startDate} - {experience.endDate}
-                        </span>
+                        <h5 className="text-lg font-semibold text-gray-900 mb-4">
+                          Key Responsibilities:
+                        </h5>
+                        <ul className="space-y-3">
+                          {experience.responsibilities.map(
+                            (responsibility, i) => (
+                              <li key={i} className="flex items-start">
+                                <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                                <span className="text-gray-700 leading-relaxed">
+                                  {responsibility}
+                                </span>
+                              </li>
+                            )
+                          )}
+                        </ul>
                       </div>
                     </div>
-                    <div>
-                      <h5 className="text-lg font-semibold text-gray-900 mb-4">
-                        Key Responsibilities:
-                      </h5>
-                      <ul className="space-y-3">
-                        {experience.responsibilities.map(
-                          (responsibility, i) => (
-                            <li key={i} className="flex items-start">
-                              <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                              <span className="text-gray-700 leading-relaxed">
-                                {responsibility}
-                              </span>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
 
           {/* Projects Section */}
-          <section id="projects" className="py-20 px-6 bg-white">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold mb-6">Featured Projects</h2>
-                <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
+          <section
+            id="projects"
+            className="py-20 px-6 bg-gradient-to-br from-gray-50 via-white to-blue-50"
+          >
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-20">
+                <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
+                  Featured Projects
+                </h2>
+                <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-6 rounded-full"></div>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-10">
                 {portfolioData.projects.map((project, index) => (
                   <div
                     key={index}
-                    className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                    className="project-card relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
+                    style={{
+                      animationDelay: `${index * 100}ms`,
+                      animation: "slideUp 0.6s ease-out forwards",
+                    }}
                   >
-                    <div className="h-48 relative overflow-hidden">
+                    {/* Project Image Container */}
+                    <div className="h-56 relative overflow-hidden rounded-t-2xl group">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       {project.imageURL ? (
                         <img
                           src={project.imageURL}
                           alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                          className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
                           loading="lazy"
                           onError={(e) => {
                             e.target.style.display = "none";
                             e.target.parentElement.classList.add(
                               "bg-gradient-to-br",
                               "from-blue-100",
-                              "to-purple-100",
+                              "via-purple-50",
+                              "to-indigo-100",
                               "flex",
                               "items-center",
                               "justify-center"
                             );
                             const fallbackDiv = document.createElement("div");
-                            fallbackDiv.innerHTML =
-                              '<svg class="text-blue-600" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>';
+                            fallbackDiv.className =
+                              "flex flex-col items-center justify-center text-center p-8";
+                            fallbackDiv.innerHTML = `
+                              <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                                <svg class="text-white" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <polyline points="16,18 22,12 16,6"/>
+                                  <polyline points="8,6 2,12 8,18"/>
+                                </svg>
+                              </div>
+                              <p class="text-blue-600 font-medium text-sm">Project Preview</p>
+                            `;
                             e.target.parentElement.appendChild(fallbackDiv);
                           }}
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                          <Code size={48} className="text-blue-600" />
+                        <div className="w-full h-full bg-gradient-to-br from-blue-100 via-purple-50 to-indigo-100 flex flex-col items-center justify-center">
+                          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                            <Code size={32} className="text-white" />
+                          </div>
+                          <p className="text-blue-600 font-medium text-sm">
+                            Project Preview
+                          </p>
                         </div>
                       )}
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold mb-3">
-                        {project.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologiesUsed.map((tech, i) => (
-                          <span
-                            key={i}
-                            className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
-                          >
-                            {tech.name || tech}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="flex space-x-4">
+
+                      {/* Floating Action Buttons */}
+                      <div className="absolute top-4 right-4 z-20 flex space-x-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                         <Link
                           to={project.githubLink}
-                          className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:text-blue-600 hover:bg-white transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
                         >
-                          <FaGithub size={20} />
+                          <FaGithub size={18} />
                         </Link>
                         {project.liveLink && (
                           <Link
                             to={project.liveLink || project.live}
-                            className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:text-green-600 hover:bg-white transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
                           >
-                            <ExternalLink size={20} />
+                            <ExternalLink size={16} />
                           </Link>
                         )}
                       </div>
                     </div>
+
+                    {/* Project Content */}
+                    <div className="p-6 lg:p-7">
+                      <div className="mb-4">
+                        <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2 project-card:hover:text-blue-600 transition-colors duration-200">
+                          {project.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm lg:text-base leading-relaxed line-clamp-3">
+                          {project.description}
+                        </p>
+                      </div>
+
+                      {/* Key Features */}
+                      {project.keyFeatures &&
+                        project.keyFeatures.length > 0 && (
+                          <div className="mb-4">
+                            <h4 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+                              <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
+                              Key Features
+                            </h4>
+                            <ul className="space-y-1.5">
+                              {project.keyFeatures
+                                .slice(0, 3)
+                                .map((feature, i) => (
+                                  <li
+                                    key={i}
+                                    className="flex items-start text-sm text-gray-600"
+                                  >
+                                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                    <span className="leading-relaxed">
+                                      {feature}
+                                    </span>
+                                  </li>
+                                ))}
+                              {project.keyFeatures.length > 3 && (
+                                <li className="text-xs text-blue-600 font-medium ml-3.5">
+                                  +{project.keyFeatures.length - 3} more
+                                  features
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        )}
+
+                      {/* Tech Stack */}
+                      <div className="mb-6">
+                        <h4 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+                          <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+                          Tech Stack
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {project.technologiesUsed
+                            .slice(0, 3)
+                            .map((tech, i) => (
+                              <span
+                                key={i}
+                                className="px-3 py-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200 rounded-full text-xs font-medium hover:from-blue-100 hover:to-indigo-100 transition-all duration-200 cursor-default"
+                              >
+                                {tech.name || tech}
+                              </span>
+                            ))}
+                          {project.technologiesUsed.length > 3 && (
+                            <div className="relative">
+                              <span className="px-3 py-1.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 border border-purple-200 rounded-full text-xs font-medium cursor-pointer hover:from-purple-100 hover:to-pink-100 transition-all duration-200 flex items-center space-x-1 tech-stack-group">
+                                <span>
+                                  +{project.technologiesUsed.length - 3}
+                                </span>
+
+                                {/* Tooltip for remaining tech stack */}
+                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 transition-opacity duration-200 pointer-events-none z-30 tooltip-content">
+                                  <div className="bg-gray-900 text-white px-3 py-2 rounded-lg text-xs whitespace-nowrap shadow-lg">
+                                    <div className="flex flex-wrap gap-1 max-w-48">
+                                      {project.technologiesUsed
+                                        .slice(3)
+                                        .map((tech, i) => (
+                                          <span
+                                            key={i}
+                                            className="bg-gray-700 px-2 py-1 rounded text-xs"
+                                          >
+                                            {tech.name || tech}
+                                          </span>
+                                        ))}
+                                    </div>
+                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                  </div>
+                                </div>
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex space-x-3">
+                        <Link
+                          to={project.githubLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 bg-gray-900 text-white py-2.5 px-4 rounded-xl font-medium text-sm hover:bg-gray-800 transition-all duration-200 flex items-center justify-center space-x-2 group/btn"
+                        >
+                          <FaGithub
+                            size={16}
+                            className="group-hover/btn:scale-110 transition-transform duration-200"
+                          />
+                          <span>Code</span>
+                        </Link>
+                        {project.liveLink && (
+                          <Link
+                            to={project.liveLink || project.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2.5 px-4 rounded-xl font-medium text-sm hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 group/btn shadow-lg hover:shadow-xl"
+                          >
+                            <ExternalLink
+                              size={14}
+                              className="group-hover/btn:scale-110 transition-transform duration-200"
+                            />
+                            <span>Live Demo</span>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Decorative Elements */}
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600"></div>
                   </div>
                 ))}
               </div>
@@ -438,12 +601,21 @@ const Portfolio = () => {
                 projects. Let's discuss how we can bring your ideas to life.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Link
-                  to={`mailto:john@example.com`}
-                  className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                <button
+                  onClick={() =>
+                    window.open(
+                      `https://mail.google.com/mail/?view=cm&fs=1&to=${
+                        portfolioData.email
+                      }&su=Portfolio Inquiry&body=Hello ${
+                        portfolioData.name.split(" ")[0]
+                      }, I found your portfolio and would like to discuss...`,
+                      "_blank"
+                    )
+                  }
+                  className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
                 >
                   Send me an email
-                </Link>
+                </button>
                 <Link
                   to={portfolioData.resume}
                   target="_blank"
@@ -459,30 +631,61 @@ const Portfolio = () => {
           <footer className="bg-gray-900 text-white py-12 px-6">
             <div className="max-w-6xl mx-auto text-center">
               <div className="flex justify-center space-x-6 mb-6">
-                <Link
-                  to="#"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
-                  <FaGithub size={26} />
-                </Link>
-                <Link
-                  to="#"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
-                  <FaLinkedin size={26} />
-                </Link>
-                <Link
-                  to="#"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
-                  <FaXTwitter size={26} />
-                </Link>
-                <Link
-                  to={`mailto:john@example.com`}
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                {portfolioData.socialLinks?.github && (
+                  <Link
+                    to={portfolioData.socialLinks.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white transition-colors duration-200"
+                  >
+                    <FaGithub size={26} />
+                  </Link>
+                )}
+                {portfolioData.socialLinks?.linkedin && (
+                  <Link
+                    to={portfolioData.socialLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white transition-colors duration-200"
+                  >
+                    <FaLinkedin size={26} />
+                  </Link>
+                )}
+                {portfolioData.socialLinks?.twitter && (
+                  <Link
+                    to={portfolioData.socialLinks.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white transition-colors duration-200"
+                  >
+                    <FaXTwitter size={26} />
+                  </Link>
+                )}
+                {portfolioData.socialLinks?.website && (
+                  <Link
+                    to={portfolioData.socialLinks.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white transition-colors duration-200"
+                  >
+                    <Globe size={26} />
+                  </Link>
+                )}
+                <button
+                  onClick={() =>
+                    window.open(
+                      `https://mail.google.com/mail/?view=cm&fs=1&to=${
+                        portfolioData.email
+                      }&su=Portfolio Inquiry&body=Hello ${
+                        portfolioData.name.split(" ")[0]
+                      }, I found your portfolio and would like to discuss...`,
+                      "_blank"
+                    )
+                  }
+                  className="text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer bg-transparent border-none p-0"
                 >
                   <Mail size={26} />
-                </Link>
+                </button>
               </div>
               <p className="text-gray-400">© 2025 {portfolioData.name}</p>
             </div>
@@ -499,8 +702,30 @@ const Portfolio = () => {
                 transform: translateY(0);
               }
             }
+            @keyframes slideUp {
+              from {
+                opacity: 0;
+                transform: translateY(40px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
             .animate-fade-in {
               animation: fade-in 1s ease-out;
+            }
+            .line-clamp-3 {
+              display: -webkit-box;
+              -webkit-line-clamp: 3;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+            .tech-stack-group:hover .tooltip-content {
+              opacity: 1;
+            }
+            .project-card:hover h3 {
+              color: rgb(37 99 235);
             }
           `}</style>
         </>

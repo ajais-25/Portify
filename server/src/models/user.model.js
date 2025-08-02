@@ -42,14 +42,6 @@ const userSchema = new Schema(
             type: String,
             trim: true,
         },
-        country: {
-            type: String,
-            trim: true,
-        },
-        city: {
-            type: String,
-            trim: true,
-        },
         socialLinks: {
             github: {
                 type: String,
@@ -71,11 +63,13 @@ const userSchema = new Schema(
         resume: {
             type: String,
             trim: true,
+            required: true,
         },
         skills: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "Technology",
+                required: true,
             },
         ],
         experience: [
@@ -83,14 +77,17 @@ const userSchema = new Schema(
                 company: {
                     type: String,
                     trim: true,
+                    required: true,
                 },
                 position: {
                     type: String,
                     trim: true,
+                    required: true,
                 },
                 startDate: {
                     type: String, // Format: "MM/YYYY"
                     trim: true,
+                    required: true,
                 },
                 endDate: {
                     type: String, // Format: "MM/YYYY", optional
@@ -100,6 +97,7 @@ const userSchema = new Schema(
                     {
                         type: String,
                         trim: true,
+                        required: true,
                     },
                 ],
             },
@@ -108,6 +106,7 @@ const userSchema = new Schema(
             {
                 type: Schema.Types.ObjectId,
                 ref: "Project",
+                required: true,
             },
         ],
     },

@@ -43,6 +43,9 @@ const Portfolio = () => {
 
   useEffect(() => {
     getPortfolioData();
+  }, [username]);
+
+  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
@@ -76,9 +79,10 @@ const Portfolio = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [username]);
+  }, [portfolioData]);
 
   const scrollToSection = (sectionId) => {
+    setActiveSection(sectionId);
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -316,54 +320,245 @@ const Portfolio = () => {
 
           {/* Experience Section */}
           {portfolioData.experience && portfolioData.experience.length > 0 && (
-            <section id="experience" className="py-20 px-6">
-              <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold mb-6">
-                    Professional Experience
+            <section
+              id="experience"
+              className="py-20 px-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden"
+            >
+              {/* Background decorative elements */}
+              <div className="absolute top-0 left-0 w-full h-full opacity-30">
+                <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+                <div className="absolute top-40 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+                <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
+              </div>
+
+              <div className="max-w-6xl mx-auto relative z-10">
+                <div className="text-center mb-20">
+                  <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                    Professional Journey
                   </h2>
-                  <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
+                  <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-6 rounded-full"></div>
+                  <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    My career path and the experiences that shaped my
+                    professional growth
+                  </p>
                 </div>
-                <div className="space-y-8">
-                  {portfolioData.experience.map((experience, index) => (
-                    <div
-                      key={index}
-                      className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
-                    >
-                      <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
-                        <div>
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                            {experience.position}
-                          </h3>
-                          <h4 className="text-xl text-blue-600 font-medium mb-2">
-                            {experience.company}
-                          </h4>
+
+                {/* Timeline Layout */}
+                <div className="relative">
+                  {/* Timeline line */}
+                  <div
+                    className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-400 via-purple-500 to-indigo-600 rounded-full hidden lg:block"
+                    style={{
+                      height: `${portfolioData.experience.length * 320 - 80}px`,
+                    }}
+                  ></div>
+
+                  {/* Mobile timeline line */}
+                  <div
+                    className="absolute left-8 top-0 w-0.5 bg-gradient-to-b from-blue-400 via-purple-500 to-indigo-600 rounded-full lg:hidden"
+                    style={{
+                      height: `${portfolioData.experience.length * 280 - 40}px`,
+                    }}
+                  ></div>
+
+                  <div className="space-y-16 lg:space-y-20">
+                    {portfolioData.experience.map((experience, index) => (
+                      <div
+                        key={index}
+                        className={`relative flex items-center ${
+                          index % 2 === 0
+                            ? "lg:flex-row"
+                            : "lg:flex-row-reverse"
+                        } flex-col lg:gap-16`}
+                        style={{
+                          animationDelay: `${index * 200}ms`,
+                          animation: "slideInFromSide 0.8s ease-out forwards",
+                          opacity: 0,
+                        }}
+                      >
+                        {/* Timeline node */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 z-20 hidden lg:block">
+                          <div className="w-6 h-6 bg-white rounded-full border-4 border-blue-500 shadow-lg">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full mx-auto mt-0.5"></div>
+                          </div>
+                          {/* Timeline pulse effect */}
+                          <div className="absolute inset-0 w-6 h-6 bg-blue-400 rounded-full animate-ping opacity-20"></div>
                         </div>
-                        <div className="text-gray-600 font-medium">
-                          <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-                            {experience.startDate} - {experience.endDate}
-                          </span>
+
+                        {/* Mobile timeline node */}
+                        <div className="absolute left-8 transform -translate-x-1/2 z-20 lg:hidden">
+                          <div className="w-4 h-4 bg-white rounded-full border-3 border-blue-500 shadow-lg">
+                            <div className="w-1 h-1 bg-blue-500 rounded-full mx-auto mt-0.5"></div>
+                          </div>
                         </div>
+
+                        {/* Experience Card */}
+                        <div
+                          className={`w-full lg:w-5/12 ml-16 lg:ml-0 ${
+                            index % 2 === 0 ? "lg:mr-auto" : "lg:ml-auto"
+                          }`}
+                        >
+                          <div className="group bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-white/20 overflow-hidden">
+                            {/* Card header with gradient */}
+                            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 p-6 text-white relative overflow-hidden">
+                              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300"></div>
+                              <div className="relative z-10">
+                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
+                                  <div className="flex-1">
+                                    <h3 className="text-xl sm:text-2xl font-bold mb-2 group-hover:scale-105 transition-transform duration-300">
+                                      {experience.position}
+                                    </h3>
+                                    <h4 className="text-lg sm:text-xl font-medium opacity-90 flex items-center">
+                                      <div className="w-2 h-2 bg-white rounded-full mr-3"></div>
+                                      {experience.company}
+                                    </h4>
+                                  </div>
+                                  <div className="mt-4 sm:mt-0 sm:ml-4">
+                                    <span className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium border border-white/30">
+                                      {experience.startDate} -{" "}
+                                      {experience.endDate &&
+                                      experience.endDate.toLowerCase() !==
+                                        "present" &&
+                                      experience.endDate.toLowerCase() !==
+                                        "current" ? (
+                                        experience.endDate
+                                      ) : (
+                                        <span className="font-semibold text-green-200">
+                                          Present
+                                        </span>
+                                      )}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Decorative elements */}
+                              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+                              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12"></div>
+                            </div>
+
+                            {/* Card body */}
+                            <div className="p-6 sm:p-8">
+                              {/* Experience description */}
+                              {experience.description && (
+                                <div className="mb-6">
+                                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base italic border-l-4 border-blue-200 pl-4 bg-blue-50/50 py-3 rounded-r-lg">
+                                    "{experience.description}"
+                                  </p>
+                                </div>
+                              )}
+
+                              {/* Key Achievements/Responsibilities */}
+                              <div className="mb-6">
+                                <h5 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                                  <div className="w-6 h-6 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                                    <svg
+                                      className="w-3 h-3 text-white"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </div>
+                                  Key Achievements & Responsibilities
+                                </h5>
+                                <ul className="space-y-3">
+                                  {experience.responsibilities.map(
+                                    (responsibility, i) => (
+                                      <li
+                                        key={i}
+                                        className="flex items-start group/item hover:bg-blue-50/50 p-2 rounded-lg transition-colors duration-200"
+                                        style={{
+                                          animationDelay: `${
+                                            index * 200 + i * 100
+                                          }ms`,
+                                          animation:
+                                            "fadeInUp 0.6s ease-out forwards",
+                                          opacity: 0,
+                                        }}
+                                      >
+                                        <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2.5 mr-4 flex-shrink-0 group-hover/item:scale-125 transition-transform duration-200"></div>
+                                        <span className="text-gray-700 leading-relaxed text-sm sm:text-base group-hover/item:text-gray-900 transition-colors duration-200">
+                                          {responsibility}
+                                        </span>
+                                      </li>
+                                    )
+                                  )}
+                                </ul>
+                              </div>
+
+                              {/* Technologies/Skills used */}
+                              {experience.technologies &&
+                                experience.technologies.length > 0 && (
+                                  <div className="mb-4">
+                                    <h6 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+                                      <span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
+                                      Technologies Used
+                                    </h6>
+                                    <div className="flex flex-wrap gap-2">
+                                      {experience.technologies.map(
+                                        (tech, i) => (
+                                          <span
+                                            key={i}
+                                            className="px-3 py-1.5 bg-gradient-to-r from-orange-50 to-red-50 text-orange-700 border border-orange-200 rounded-full text-xs font-medium hover:from-orange-100 hover:to-red-100 transition-all duration-200 cursor-default transform hover:scale-105"
+                                          >
+                                            {tech}
+                                          </span>
+                                        )
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+
+                              {/* Experience metrics/achievements */}
+                              {experience.metrics &&
+                                experience.metrics.length > 0 && (
+                                  <div className="border-t border-gray-100 pt-4">
+                                    <h6 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+                                      <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                      Key Metrics & Impact
+                                    </h6>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                      {experience.metrics.map((metric, i) => (
+                                        <div
+                                          key={i}
+                                          className="bg-green-50 border border-green-200 rounded-lg p-3 text-center"
+                                        >
+                                          <div className="text-lg font-bold text-green-700">
+                                            {metric.value}
+                                          </div>
+                                          <div className="text-xs text-green-600">
+                                            {metric.label}
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Connecting line for better visual flow */}
+                        <div
+                          className={`hidden lg:block w-6 border-t-2 border-dashed border-blue-300 ${
+                            index % 2 === 0 ? "order-last" : "order-first"
+                          }`}
+                        ></div>
                       </div>
-                      <div>
-                        <h5 className="text-lg font-semibold text-gray-900 mb-4">
-                          Key Responsibilities:
-                        </h5>
-                        <ul className="space-y-3">
-                          {experience.responsibilities.map(
-                            (responsibility, i) => (
-                              <li key={i} className="flex items-start">
-                                <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                                <span className="text-gray-700 leading-relaxed">
-                                  {responsibility}
-                                </span>
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
+                    ))}
+                  </div>
+
+                  {/* Timeline end marker */}
+                  <div className="flex justify-center mt-16">
+                    <div className="w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-lg">
+                      <div className="w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-pulse"></div>
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
             </section>
@@ -712,8 +907,51 @@ const Portfolio = () => {
                 transform: translateY(0);
               }
             }
+            @keyframes slideInFromSide {
+              from {
+                opacity: 0;
+                transform: translateX(-50px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            @keyframes fadeInUp {
+              from {
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            @keyframes blob {
+              0% {
+                transform: translate(0px, 0px) scale(1);
+              }
+              33% {
+                transform: translate(30px, -50px) scale(1.1);
+              }
+              66% {
+                transform: translate(-20px, 20px) scale(0.9);
+              }
+              100% {
+                transform: translate(0px, 0px) scale(1);
+              }
+            }
             .animate-fade-in {
               animation: fade-in 1s ease-out;
+            }
+            .animate-blob {
+              animation: blob 7s infinite;
+            }
+            .animation-delay-2000 {
+              animation-delay: 2s;
+            }
+            .animation-delay-4000 {
+              animation-delay: 4s;
             }
             .line-clamp-3 {
               display: -webkit-box;
@@ -726,6 +964,23 @@ const Portfolio = () => {
             }
             .project-card:hover h3 {
               color: rgb(37 99 235);
+            }
+            .border-3 {
+              border-width: 3px;
+            }
+            /* Custom scrollbar for better experience */
+            ::-webkit-scrollbar {
+              width: 8px;
+            }
+            ::-webkit-scrollbar-track {
+              background: #f1f5f9;
+            }
+            ::-webkit-scrollbar-thumb {
+              background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+              border-radius: 4px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+              background: linear-gradient(to bottom, #2563eb, #7c3aed);
             }
           `}</style>
         </>

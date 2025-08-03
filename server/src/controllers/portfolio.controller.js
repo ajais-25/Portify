@@ -33,6 +33,20 @@ const getPortfolio = async (req, res) => {
             });
         }
 
+        // Sort experience by start date in decreasing order (most recent first)
+        if (user.experience && user.experience.length > 0) {
+            user.experience.sort((a, b) => {
+                // Convert MM/YYYY to Date for comparison
+                const dateA = new Date(
+                    a.startDate.split("/").reverse().join("-")
+                );
+                const dateB = new Date(
+                    b.startDate.split("/").reverse().join("-")
+                );
+                return dateB - dateA; // Descending order
+            });
+        }
+
         return res.status(200).json({
             success: true,
             message: "Portfolio fetched successfully",

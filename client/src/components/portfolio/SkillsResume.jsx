@@ -159,51 +159,159 @@ const SkillsResume = ({ userData, onUpdate }) => {
   );
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900">Skills & Resume</h2>
-        <p className="mt-1 text-sm text-gray-600">
-          Select your skills and add your resume link.
-        </p>
+    <div className="space-y-8">
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
+        <div className="flex items-center space-x-3">
+          <div className="p-2 bg-blue-100 rounded-lg">
+            <svg
+              className="w-6 h-6 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Skills & Resume
+            </h2>
+            <p className="mt-1 text-sm text-blue-600">
+              Showcase your technical expertise and share your resume
+            </p>
+          </div>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
         {/* Skills Section */}
-        <div>
+        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <svg
+                className="w-5 h-5 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Technical Skills
+            </h3>
+          </div>
+
           {/* Selected Skills */}
           {selectedTechnologies.length > 0 && (
-            <div className="mb-4">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">
-                Selected Skills:
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {selectedTechnologies.map((tech) => (
-                  <span
-                    key={tech._id}
-                    className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
-                  >
-                    {tech.name}
-                    <button
-                      type="button"
-                      onClick={() => removeSkill(tech._id)}
-                      className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-600"
-                    >
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-2">
+                  <h4 className="text-sm font-semibold text-gray-800">
+                    Selected Skills
+                  </h4>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    {selectedTechnologies.length}{" "}
+                    {selectedTechnologies.length === 1 ? "skill" : "skills"}
                   </span>
+                </div>
+                <div className="flex items-center text-xs text-gray-500">
+                  <svg
+                    className="w-3 h-3 mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                  Click × to remove
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {selectedTechnologies.map((tech, index) => (
+                  <div
+                    key={tech._id}
+                    className="group relative bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-xl p-4 hover:shadow-md transition-all duration-300 hover:scale-105"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                          {tech.name.charAt(0).toUpperCase()}
+                        </div>
+                        <span className="font-medium text-gray-800 text-sm">
+                          {tech.name}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeSkill(tech._id)}
+                        className="opacity-0 group-hover:opacity-100 flex items-center justify-center w-6 h-6 rounded-full bg-red-100 hover:bg-red-200 text-red-600 transition-all duration-200 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-red-300 cursor-pointer"
+                        title="Remove skill"
+                      >
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
                 ))}
+              </div>
+
+              {/* Skills summary */}
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center text-blue-700">
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                    <span className="font-medium">Skills Portfolio</span>
+                  </div>
+                  <span className="text-blue-600 font-semibold">
+                    {selectedTechnologies.length} technologies mastered
+                  </span>
+                </div>
               </div>
             </div>
           )}
@@ -214,124 +322,302 @@ const SkillsResume = ({ userData, onUpdate }) => {
               htmlFor="skills-filter"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Add Skills
+              Search & Add New Skills
             </label>
-            <input
-              id="skills-filter"
-              type="text"
-              value={techFilter}
-              onChange={handleTechFilterChange}
-              onKeyDown={handleTechFilterKeyDown}
-              onFocus={() => setShowTechDropdown(true)}
-              onBlur={(e) => {
-                // Don't hide dropdown if clicking on a dropdown item
-                if (!dropdownRef.current?.contains(e.relatedTarget)) {
-                  setTimeout(() => setShowTechDropdown(false), 200);
-                }
-              }}
-              placeholder="Search and select skills..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+              <input
+                id="skills-filter"
+                type="text"
+                value={techFilter}
+                onChange={handleTechFilterChange}
+                onKeyDown={handleTechFilterKeyDown}
+                onFocus={() => setShowTechDropdown(true)}
+                onBlur={(e) => {
+                  if (!dropdownRef.current?.contains(e.relatedTarget)) {
+                    setTimeout(() => setShowTechDropdown(false), 200);
+                  }
+                }}
+                placeholder="Search for skills (React, Python, JavaScript...)"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              />
+            </div>
 
             {/* Technology Dropdown */}
             {showTechDropdown && (
               <div
                 ref={dropdownRef}
-                className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
+                className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl max-h-60 overflow-y-auto"
               >
                 {filteredTechnologies.length > 0 ? (
-                  filteredTechnologies.map((tech, index) => {
-                    const isSelected = selectedSkills.includes(tech._id);
-                    const isFocused = index === focusedTechIndex;
+                  <div className="py-2">
+                    {filteredTechnologies.map((tech, index) => {
+                      const isSelected = selectedSkills.includes(tech._id);
+                      const isFocused = index === focusedTechIndex;
 
-                    return (
-                      <div
-                        key={tech._id}
-                        ref={(el) => (focusedItemRefs.current[index] = el)}
-                        onMouseDown={(e) => {
-                          e.preventDefault(); // Prevent blur event
-                          handleSkillToggle(tech._id);
-                          setTechFilter("");
-                          setShowTechDropdown(false);
-                          setFocusedTechIndex(-1);
-                        }}
-                        className={`px-3 py-2 cursor-pointer flex items-center justify-between ${
-                          isFocused ? "bg-blue-50" : "hover:bg-gray-50"
-                        } ${isSelected ? "bg-blue-100" : ""}`}
-                      >
-                        <span
-                          className={`text-sm ${
+                      return (
+                        <div
+                          key={tech._id}
+                          ref={(el) => (focusedItemRefs.current[index] = el)}
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            handleSkillToggle(tech._id);
+                            setTechFilter("");
+                            setShowTechDropdown(false);
+                            setFocusedTechIndex(-1);
+                          }}
+                          className={`mx-2 px-3 py-2 cursor-pointer flex items-center justify-between rounded-lg transition-colors ${
+                            isFocused
+                              ? "bg-blue-50 border border-blue-200"
+                              : "hover:bg-gray-50"
+                          } ${
                             isSelected
-                              ? "text-blue-800 font-medium"
-                              : "text-gray-700"
+                              ? "bg-blue-100 border border-blue-200"
+                              : ""
                           }`}
                         >
-                          {tech.name}
-                        </span>
-                        {isSelected && (
-                          <svg
-                            className="w-4 h-4 text-blue-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                          <span
+                            className={`text-sm font-medium ${
+                              isSelected ? "text-blue-800" : "text-gray-700"
+                            }`}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        )}
-                      </div>
-                    );
-                  })
+                            {tech.name}
+                          </span>
+                          {isSelected && (
+                            <div className="flex items-center">
+                              <span className="text-xs text-blue-600 mr-2">
+                                Added
+                              </span>
+                              <svg
+                                className="w-4 h-4 text-blue-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 ) : (
-                  <div className="px-3 py-2 text-sm text-gray-500">
-                    No skills found
+                  <div className="px-4 py-3 text-sm text-gray-500 text-center">
+                    {techFilter
+                      ? "No matching skills found"
+                      : "Start typing to search skills"}
                   </div>
                 )}
               </div>
             )}
 
-            <p className="text-xs text-gray-500 mt-1">
-              Use ↑↓ arrow keys to navigate, Enter to select, Esc to close
-            </p>
+            <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">
+              <span className="flex items-center">
+                <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">↑↓</kbd>
+                <span className="ml-1">Navigate</span>
+              </span>
+              <span className="flex items-center">
+                <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">
+                  Enter
+                </kbd>
+                <span className="ml-1">Select</span>
+              </span>
+              <span className="flex items-center">
+                <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Esc</kbd>
+                <span className="ml-1">Close</span>
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Resume Section */}
-        <div>
-          <label
-            htmlFor="resume"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Resume (Google Drive Link)
-          </label>
-          <div className="mt-1">
-            <input
-              type="url"
-              name="resume"
-              id="resume"
-              value={resume}
-              onChange={(e) => setResume(e.target.value)}
-              placeholder="https://drive.google.com/file/d/your-file-id/view"
-              className="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <p className="mt-1 text-xs text-gray-500">
-              Make sure your Google Drive link is set to "Anyone with the link
-              can view"
-            </p>
+        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <svg
+                className="w-5 h-5 text-purple-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Resume Document
+              </h3>
+              <p className="text-sm text-gray-600">
+                Share your professional resume
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <label
+              htmlFor="resume"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Google Drive Resume Link
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                  />
+                </svg>
+              </div>
+              <input
+                type="url"
+                name="resume"
+                id="resume"
+                value={resume}
+                onChange={(e) => setResume(e.target.value)}
+                placeholder="https://drive.google.com/file/d/your-file-id/view"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+              />
+            </div>
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <div className="flex items-start">
+                <svg
+                  className="w-5 h-5 text-amber-600 mt-0.5 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
+                </svg>
+                <div>
+                  <p className="text-sm font-medium text-amber-800">
+                    Important:
+                  </p>
+                  <p className="text-sm text-amber-700 mt-1">
+                    Make sure your Google Drive link is set to "Anyone with the
+                    link can view" for public access.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {resume && (
+              <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-3">
+                <div className="flex items-center">
+                  <svg
+                    className="w-5 h-5 text-green-600 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span className="text-sm font-medium text-green-800">
+                    Resume link added
+                  </span>
+                </div>
+                <a
+                  href={resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-green-700 hover:text-green-800 underline"
+                >
+                  Preview
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
+        {/* Save Button */}
         <div className="flex justify-end">
           <button
             type="submit"
             disabled={loading || !hasChanges}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="group flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg shadow-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-blue-600 disabled:hover:to-indigo-600 cursor-pointer"
           >
-            {loading ? "Saving..." : "Save Changes"}
+            {loading ? (
+              <>
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Saving Changes...
+              </>
+            ) : (
+              <>
+                <svg
+                  className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                Save Changes
+              </>
+            )}
           </button>
         </div>
       </form>

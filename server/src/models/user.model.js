@@ -28,12 +28,6 @@ const userSchema = new Schema(
             required: true,
             minlength: 6,
         },
-        role: {
-            type: String,
-            enum: ["user", "admin"],
-            default: "user",
-            required: true,
-        },
         tagline: {
             type: String,
             required: true,
@@ -137,7 +131,6 @@ userSchema.methods.generateAuthToken = function () {
             name: this.name,
             email: this.email,
             username: this.username,
-            role: this.role,
         },
         process.env.JWT_SECRET,
         {

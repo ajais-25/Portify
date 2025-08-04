@@ -2,6 +2,7 @@ import { Technology } from "../models/technology.model.js";
 
 const addTechnology = async (req, res) => {
     const { name, image } = req.body;
+    const { ADMIN_EMAIL } = process.env;
 
     if (!name || !image) {
         return res.status(400).json({
@@ -13,7 +14,7 @@ const addTechnology = async (req, res) => {
     try {
         const user = req.user;
 
-        if (user.role !== "admin") {
+        if (user.email !== ADMIN_EMAIL) {
             return res.status(403).json({
                 success: false,
                 message: "Only admins can add technologies",

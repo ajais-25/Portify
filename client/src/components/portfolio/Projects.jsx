@@ -484,6 +484,20 @@ const Projects = ({ userData, onUpdate }) => {
                       className="w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:cursor-pointer cursor-pointer"
                     />
 
+                    {/* Show preview of selected image */}
+                    {formData.image && (
+                      <div className="mt-3">
+                        <p className="text-sm text-gray-600 mb-2">
+                          Selected image preview:
+                        </p>
+                        <img
+                          src={URL.createObjectURL(formData.image)}
+                          alt="Selected preview"
+                          className="w-24 h-24 object-cover rounded-lg border border-gray-300"
+                        />
+                      </div>
+                    )}
+
                     {editingProject && editingProject.imageURL && (
                       <p className="text-xs text-gray-500 mt-2">
                         Upload a new image to replace the current one, or leave

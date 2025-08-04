@@ -6,7 +6,6 @@ import {
     updateUserAbout,
     updateUserSocialLinks,
     updateUserSkillsAndResume,
-    updateUserEducation,
     updateUserExperience,
     getUserProfile,
 } from "../controllers/user.controller.js";
@@ -30,7 +29,6 @@ router.route("/profile/social-links").put(verifyUser, updateUserSocialLinks);
 router
     .route("/profile/skills-resume")
     .put(verifyUser, updateUserSkillsAndResume);
-router.route("/profile/education").put(verifyUser, updateUserEducation);
 router.route("/profile/experience").put(verifyUser, updateUserExperience);
 
 export default router;

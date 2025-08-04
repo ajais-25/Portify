@@ -146,7 +146,7 @@ const updateUserAbout = async (req, res) => {
     if (!tagline || !description) {
         return res.status(400).json({
             success: false,
-            message: "All fields are required",
+            message: "Tagline and Description are required",
         });
     }
 
@@ -222,10 +222,10 @@ const updateUserSocialLinks = async (req, res) => {
 const updateUserSkillsAndResume = async (req, res) => {
     const { skills, resume } = req.body;
 
-    if (!skills || !resume) {
+    if (skills.length == 0 || !resume) {
         return res.status(400).json({
             success: false,
-            message: "Skills and resume are required",
+            message: "Skills and Resume are required",
         });
     }
 
@@ -262,46 +262,6 @@ const updateUserSkillsAndResume = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Error updating user skills and resume",
-        });
-    }
-};
-
-const updateUserEducation = async (req, res) => {
-    const { education } = req.body;
-
-    if (!education || !Array.isArray(education)) {
-        return res.status(400).json({
-            success: false,
-            message: "Education is required and must be an array",
-        });
-    }
-
-    try {
-        const userId = req.user._id;
-
-        const user = await User.findById(userId);
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
-
-        user.education = education;
-
-        await user.save({ validateBeforeSave: false });
-
-        return res.status(200).json({
-            success: true,
-            message: "User education updated successfully",
-            data: user.education,
-        });
-    } catch (error) {
-        console.error("Error updating user education:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Error updating user education",
         });
     }
 };
@@ -467,7 +427,6 @@ export {
     updateUserAbout,
     updateUserSocialLinks,
     updateUserSkillsAndResume,
-    updateUserEducation,
     updateUserExperience,
     getUserProfile,
 };

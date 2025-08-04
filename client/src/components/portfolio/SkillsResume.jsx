@@ -139,7 +139,7 @@ const SkillsResume = ({ userData, onUpdate }) => {
         skills: response.data.data.skills,
         resume: response.data.data.resume,
       });
-      toast.success("Skills and resume updated successfully!");
+      toast.success("Skills and Resume updated successfully!");
 
       // Reset filter states
       setTechFilter("");

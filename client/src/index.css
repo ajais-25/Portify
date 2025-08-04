@@ -32,7 +32,7 @@
 
 /* Success Toast */
 .Toastify__toast--success {
-  background: linear-gradient(135deg, #86efac 0%, #4ade80 100%) !important;
+  background: linear-gradient(135deg, #a9ffc9 0%, #a9ffc9 100%) !important;
   color: #166534 !important;
 }
 

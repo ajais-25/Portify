@@ -44,16 +44,20 @@ function App() {
           </Suspense>
         </BrowserRouter>
         <ToastContainer
-          position="top-right"
+          position="top-center"
           autoClose={3000}
           hideProgressBar={false}
-          newestOnTop={false}
+          newestOnTop={true}
           closeOnClick
           rtl={false}
-          pauseOnFocusLoss
+          pauseOnFocusLoss={false}
           draggable
           pauseOnHover
-          theme="light"
+          theme="colored"
+          className="toast-container"
+          toastClassName="toast-custom"
+          bodyClassName="toast-body"
+          progressClassName="toast-progress"
         />
       </AuthProvider>
     </>

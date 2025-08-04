@@ -6,9 +6,10 @@ import SocialLinks from "../components/portfolio/SocialLinks";
 import Projects from "../components/portfolio/Projects";
 import SkillsResume from "../components/portfolio/SkillsResume";
 import Experience from "../components/portfolio/Experience";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState("about");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,9 +30,10 @@ const Dashboard = () => {
     try {
       const response = await api.get("/users/profile");
       setUserData(response.data.data);
-      console.log("User profile data:", response.data.data);
     } catch (error) {
+      toast.error("Error fetching user profile");
       console.error("Error fetching user profile:", error);
+      setUserData(null);
     } finally {
       setLoading(false);
     }
@@ -42,6 +44,17 @@ const Dashboard = () => {
       ...prev,
       ...data,
     }));
+  };
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/users/logout");
+      await logout();
+      toast.success("Logged out successfully");
+    } catch (error) {
+      toast.error("Error logging out. Please try again.");
+      console.error("Logout error:", error);
+    }
   };
 
   if (loading) {
@@ -66,17 +79,46 @@ const Dashboard = () => {
                 Manage your portfolio information
               </p>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-500">
-                Welcome, {user?.name}
-              </span>
+            <div className="flex items-center gap-3">
               <button
                 onClick={() =>
                   window.open(`/portfolio/${user?.username}`, "_blank")
                 }
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 shadow-sm cursor-pointer"
               >
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
                 View Portfolio
+              </button>
+              <button
+                onClick={handleLogout}
+                className="inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 shadow-sm cursor-pointer"
+              >
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  />
+                </svg>
+                Logout
               </button>
             </div>
           </div>

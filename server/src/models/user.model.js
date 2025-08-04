@@ -36,10 +36,15 @@ const userSchema = new Schema(
         },
         tagline: {
             type: String,
+            required: true,
+            default: "Empowering the web with scalable, future-ready solutions",
             trim: true,
         },
         description: {
             type: String,
+            required: true,
+            default:
+                "I'm a full-stack developer with a passion for crafting scalable, user-centric digital solutions. I specialize in building modern web applications using technologies like React, Node.js, MongoDB, and Tailwind CSS. From intuitive UI design to robust backend architecture, I bring end-to-end product visions to life with clean code and problem-solving mindset.",
             trim: true,
         },
         socialLinks: {

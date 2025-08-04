@@ -617,7 +617,7 @@ const Experience = ({ userData, onUpdate }) => {
         )}
 
         {/* Save Section */}
-        {experience.length > 0 && (
+        {(experience.length > 0 || hasChanges) && (
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">

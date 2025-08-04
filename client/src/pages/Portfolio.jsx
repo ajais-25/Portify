@@ -649,9 +649,25 @@ const Portfolio = () => {
                           <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2 project-card:hover:text-blue-600 transition-colors duration-200">
                             {project.title}
                           </h3>
-                          <p className="text-gray-600 text-sm lg:text-base leading-relaxed line-clamp-3">
-                            {project.description}
-                          </p>
+                          <div className="relative group/description">
+                            <p className="text-gray-600 text-sm lg:text-base leading-relaxed line-clamp-3 cursor-pointer">
+                              {project.description}
+                            </p>
+
+                            {/* Tooltip for full description */}
+                            {project.description &&
+                              project.description.length > 150 && (
+                                <div className="absolute bottom-full left-0 mb-2 opacity-0 group-hover/description:opacity-100 transition-opacity duration-200 z-30 pointer-events-none">
+                                  <div className="bg-gray-900 text-white text-sm rounded-lg px-4 py-3 shadow-xl max-w-80 whitespace-normal">
+                                    <p className="leading-relaxed">
+                                      {project.description}
+                                    </p>
+                                    {/* Arrow pointing down */}
+                                    <div className="absolute top-full left-4 w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-gray-900"></div>
+                                  </div>
+                                </div>
+                              )}
+                          </div>
                         </div>
 
                         {/* Key Features */}

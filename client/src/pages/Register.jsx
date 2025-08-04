@@ -130,8 +130,8 @@ const Register = () => {
 
         toast.success("Registration successful! Welcome to Portify!");
 
-        // Redirect to home page
-        navigate("/", { replace: true });
+        // Redirect to dashboard
+        navigate("/dashboard", { replace: true });
       } else {
         toast.error(response.data.message || "Registration failed");
         return;

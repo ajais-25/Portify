@@ -52,13 +52,13 @@ const About = ({ userData, onUpdate }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="space-y-8">
       {/* Header Section */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+        <div className="flex items-center space-x-3">
+          <div className="bg-blue-100 p-3 rounded-lg">
             <svg
-              className="w-6 h-6 text-white"
+              className="w-6 h-6 text-blue-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -72,15 +72,12 @@ const About = ({ userData, onUpdate }) => {
             </svg>
           </div>
           <div>
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              About Me
-            </h2>
-            <p className="text-gray-600 text-sm mt-1">
+            <h2 className="text-3xl font-bold text-gray-900">About Me</h2>
+            <p className="mt-2 text-gray-600 max-w-2xl">
               Share your story and let the world know who you are
             </p>
           </div>
         </div>
-        <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
       </div>
 
       {/* Tips Section */}

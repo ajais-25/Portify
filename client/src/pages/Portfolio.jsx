@@ -53,11 +53,15 @@ const Portfolio = () => {
       const sections = [
         "home",
         "about",
-        "skills",
+        ...(portfolioData?.skills && portfolioData.skills.length > 0
+          ? ["skills"]
+          : []),
         ...(portfolioData?.experience && portfolioData.experience.length > 0
           ? ["experience"]
           : []),
-        "projects",
+        ...(portfolioData?.projects && portfolioData.projects.length > 0
+          ? ["projects"]
+          : []),
         "contact",
       ];
       const scrollPosition = window.scrollY + window.innerHeight / 3;
@@ -143,12 +147,17 @@ const Portfolio = () => {
                   {[
                     "Home",
                     "About",
-                    "Skills",
+                    ...(portfolioData.skills && portfolioData.skills.length > 0
+                      ? ["Skills"]
+                      : []),
                     ...(portfolioData.experience &&
                     portfolioData.experience.length > 0
                       ? ["Experience"]
                       : []),
-                    "Projects",
+                    ...(portfolioData.projects &&
+                    portfolioData.projects.length > 0
+                      ? ["Projects"]
+                      : []),
                     "Contact",
                   ].map((item) => (
                     <button
@@ -280,171 +289,165 @@ const Portfolio = () => {
           </section>
 
           {/* Skills Section */}
-          <section id="skills" className="py-20 px-6 bg-white">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold mb-6">Skills & Expertise</h2>
-                <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-                {portfolioData.skills.map((skill, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105 group"
-                  >
-                    <div className="flex flex-col items-center">
-                      <img
-                        src={skill.image}
-                        alt={skill.name}
-                        className="w-12 h-12 mb-3 object-contain group-hover:scale-110 transition-transform duration-200"
-                        loading="lazy"
-                      />
-                      <span className="text-sm text-gray-700 text-center font-medium">
-                        {skill.name}
-                      </span>
+          {portfolioData.skills && portfolioData.skills.length > 0 && (
+            <section id="skills" className="py-20 px-6 bg-white">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold mb-6">
+                    Skills & Expertise
+                  </h2>
+                  <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                  {portfolioData.skills.map((skill, index) => (
+                    <div
+                      key={index}
+                      className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105 group"
+                    >
+                      <div className="flex flex-col items-center">
+                        <img
+                          src={skill.image}
+                          alt={skill.name}
+                          className="w-12 h-12 mb-3 object-contain group-hover:scale-110 transition-transform duration-200"
+                          loading="lazy"
+                        />
+                        <span className="text-sm text-gray-700 text-center font-medium">
+                          {skill.name}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
 
           {/* Experience Section */}
           {portfolioData.experience && portfolioData.experience.length > 0 && (
             <section
               id="experience"
-              className="py-20 px-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden"
+              className="py-20 px-6 bg-gradient-to-br from-gray-50 via-white to-blue-50 relative"
             >
-              {/* Background decorative elements */}
-              <div className="absolute top-0 left-0 w-full h-full opacity-30">
-                <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
-                <div className="absolute top-40 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
-                <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
-              </div>
-
-              <div className="max-w-6xl mx-auto relative z-10">
-                <div className="text-center mb-20">
-                  <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold mb-6 text-gray-900">
                     Professional Journey
                   </h2>
-                  <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-6 rounded-full"></div>
-                  <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                    My career path and the experiences that shaped my
+                  <div className="w-24 h-1 bg-blue-600 mx-auto mb-4"></div>
+                  <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                    My career path and the experiences that have shaped my
                     professional growth
                   </p>
                 </div>
 
-                {/* Timeline Layout */}
                 <div className="relative">
-                  {/* Timeline line */}
-                  <div
-                    className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-400 via-purple-500 to-indigo-600 rounded-full hidden lg:block"
-                    style={{
-                      height: `${portfolioData.experience.length * 320 - 80}px`,
-                    }}
-                  ></div>
+                  {/* Desktop Timeline Line */}
+                  <div className="hidden lg:block absolute left-1/2 transform -translate-x-0.5 w-1 h-full bg-gradient-to-b from-blue-200 via-blue-400 to-blue-600 rounded-full opacity-30"></div>
 
-                  {/* Mobile timeline line */}
-                  <div
-                    className="absolute left-8 top-0 w-0.5 bg-gradient-to-b from-blue-400 via-purple-500 to-indigo-600 rounded-full lg:hidden"
-                    style={{
-                      height: `${portfolioData.experience.length * 280 - 40}px`,
-                    }}
-                  ></div>
+                  {/* Mobile Timeline Line */}
+                  <div className="lg:hidden absolute left-6 top-0 w-0.5 h-full bg-gradient-to-b from-blue-200 via-blue-400 to-blue-600 rounded-full opacity-40"></div>
 
-                  <div className="space-y-16 lg:space-y-20">
+                  <div className="space-y-12">
                     {portfolioData.experience.map((experience, index) => (
                       <div
                         key={index}
-                        className={`relative flex items-center ${
-                          index % 2 === 0
-                            ? "lg:flex-row"
-                            : "lg:flex-row-reverse"
-                        } flex-col lg:gap-16`}
-                        style={{
-                          animationDelay: `${index * 200}ms`,
-                          animation: "slideInFromSide 0.8s ease-out forwards",
-                          opacity: 0,
-                        }}
+                        className={`relative lg:grid lg:grid-cols-2 lg:gap-12 items-center ${
+                          index % 2 === 0 ? "" : "lg:grid-flow-col-dense"
+                        }`}
                       >
-                        {/* Timeline node */}
-                        <div className="absolute left-1/2 transform -translate-x-1/2 z-20 hidden lg:block">
-                          <div className="w-6 h-6 bg-white rounded-full border-4 border-blue-500 shadow-lg">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full mx-auto mt-0.5"></div>
-                          </div>
-                          {/* Timeline pulse effect */}
-                          <div className="absolute inset-0 w-6 h-6 bg-blue-400 rounded-full animate-ping opacity-20"></div>
+                        {/* Timeline Node */}
+                        <div className="hidden lg:block absolute left-1/2 top-8 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                          <div className="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-lg"></div>
+                          <div className="absolute inset-0 w-4 h-4 bg-blue-400 rounded-full animate-ping opacity-75"></div>
                         </div>
 
-                        {/* Mobile timeline node */}
-                        <div className="absolute left-8 transform -translate-x-1/2 z-20 lg:hidden">
-                          <div className="w-4 h-4 bg-white rounded-full border-3 border-blue-500 shadow-lg">
-                            <div className="w-1 h-1 bg-blue-500 rounded-full mx-auto mt-0.5"></div>
+                        {/* Mobile Timeline Node */}
+                        <div className="lg:hidden absolute left-6 top-8 transform -translate-x-1/2 z-10">
+                          <div className="w-3 h-3 bg-blue-600 rounded-full border-2 border-white shadow-md"></div>
+                        </div>
+
+                        {/* Date Badge */}
+                        <div
+                          className={`mb-6 lg:mb-0 ml-12 lg:ml-0 ${
+                            index % 2 === 0
+                              ? "lg:col-start-1 lg:text-right"
+                              : "lg:col-start-2"
+                          }`}
+                        >
+                          <div
+                            className={`inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold ${
+                              index % 2 === 0 ? "lg:ml-auto" : ""
+                            }`}
+                          >
+                            <svg
+                              className="w-4 h-4 mr-2"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            {experience.startDate} -{" "}
+                            {experience.endDate &&
+                            experience.endDate.toLowerCase() !== "present" &&
+                            experience.endDate.toLowerCase() !== "current"
+                              ? experience.endDate
+                              : "Present"}
                           </div>
                         </div>
 
                         {/* Experience Card */}
                         <div
-                          className={`w-full lg:w-5/12 ml-16 lg:ml-0 ${
-                            index % 2 === 0 ? "lg:mr-auto" : "lg:ml-auto"
+                          className={`ml-12 lg:ml-0 ${
+                            index % 2 === 0
+                              ? "lg:col-start-2"
+                              : "lg:col-start-1"
                           }`}
                         >
-                          <div className="group bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-white/20 overflow-hidden">
-                            {/* Card header with gradient */}
-                            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 p-6 text-white relative overflow-hidden">
-                              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300"></div>
-                              <div className="relative z-10">
-                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
-                                  <div className="flex-1">
-                                    <h3 className="text-xl sm:text-2xl font-bold mb-2 group-hover:scale-105 transition-transform duration-300">
-                                      {experience.position}
-                                    </h3>
-                                    <h4 className="text-lg sm:text-xl font-medium opacity-90 flex items-center">
-                                      <div className="w-2 h-2 bg-white rounded-full mr-3"></div>
-                                      {experience.company}
-                                    </h4>
-                                  </div>
-                                  <div className="mt-4 sm:mt-0 sm:ml-4">
-                                    <span className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium border border-white/30">
-                                      {experience.startDate} -{" "}
-                                      {experience.endDate &&
-                                      experience.endDate.toLowerCase() !==
-                                        "present" &&
-                                      experience.endDate.toLowerCase() !==
-                                        "current" ? (
-                                        experience.endDate
-                                      ) : (
-                                        <span className="font-semibold text-green-200">
-                                          Present
-                                        </span>
-                                      )}
-                                    </span>
-                                  </div>
-                                </div>
+                          <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden">
+                            {/* Card Header */}
+                            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
+                              <h3 className="text-xl font-bold mb-2">
+                                {experience.position}
+                              </h3>
+                              <div className="flex items-center text-blue-100">
+                                <svg
+                                  className="w-5 h-5 mr-2"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 11-4 0 2 2 0 014 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                <span className="font-medium">
+                                  {experience.company}
+                                </span>
                               </div>
-
-                              {/* Decorative elements */}
-                              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
-                              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12"></div>
                             </div>
 
-                            {/* Card body */}
-                            <div className="p-6 sm:p-8">
-                              {/* Experience description */}
+                            {/* Card Body */}
+                            <div className="p-6">
+                              {/* Description */}
                               {experience.description && (
                                 <div className="mb-6">
-                                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base italic border-l-4 border-blue-200 pl-4 bg-blue-50/50 py-3 rounded-r-lg">
+                                  <p className="text-gray-700 leading-relaxed italic bg-gray-50 p-4 rounded-lg border-l-4 border-blue-200">
                                     "{experience.description}"
                                   </p>
                                 </div>
                               )}
 
-                              {/* Key Achievements/Responsibilities */}
+                              {/* Key Responsibilities */}
                               <div className="mb-6">
-                                <h5 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                  <div className="w-6 h-6 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                                <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                  <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3">
                                     <svg
-                                      className="w-3 h-3 text-white"
+                                      className="w-4 h-4 text-green-600"
                                       fill="currentColor"
                                       viewBox="0 0 20 20"
                                     >
@@ -455,100 +458,92 @@ const Portfolio = () => {
                                       />
                                     </svg>
                                   </div>
-                                  Key Achievements & Responsibilities
-                                </h5>
-                                <ul className="space-y-3">
-                                  {experience.responsibilities.map(
-                                    (responsibility, i) => (
+                                  Key Responsibilities
+                                </h4>
+                                <ul className="space-y-2">
+                                  {experience.responsibilities
+                                    .slice(0, 4)
+                                    .map((responsibility, i) => (
                                       <li
                                         key={i}
-                                        className="flex items-start group/item hover:bg-blue-50/50 p-2 rounded-lg transition-colors duration-200"
-                                        style={{
-                                          animationDelay: `${
-                                            index * 200 + i * 100
-                                          }ms`,
-                                          animation:
-                                            "fadeInUp 0.6s ease-out forwards",
-                                          opacity: 0,
-                                        }}
+                                        className="flex items-start text-gray-700"
                                       >
-                                        <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2.5 mr-4 flex-shrink-0 group-hover/item:scale-125 transition-transform duration-200"></div>
-                                        <span className="text-gray-700 leading-relaxed text-sm sm:text-base group-hover/item:text-gray-900 transition-colors duration-200">
+                                        <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                                        <span className="text-sm leading-relaxed">
                                           {responsibility}
                                         </span>
                                       </li>
-                                    )
+                                    ))}
+                                  {experience.responsibilities.length > 4 && (
+                                    <li className="text-sm text-blue-600 font-medium ml-5">
+                                      +{experience.responsibilities.length - 4}{" "}
+                                      more achievements
+                                    </li>
                                   )}
                                 </ul>
                               </div>
 
-                              {/* Technologies/Skills used */}
+                              {/* Technologies */}
                               {experience.technologies &&
                                 experience.technologies.length > 0 && (
                                   <div className="mb-4">
-                                    <h6 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
-                                      <span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
-                                      Technologies Used
-                                    </h6>
+                                    <h5 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+                                      <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                                      Technologies
+                                    </h5>
                                     <div className="flex flex-wrap gap-2">
-                                      {experience.technologies.map(
-                                        (tech, i) => (
+                                      {experience.technologies
+                                        .slice(0, 6)
+                                        .map((tech, i) => (
                                           <span
                                             key={i}
-                                            className="px-3 py-1.5 bg-gradient-to-r from-orange-50 to-red-50 text-orange-700 border border-orange-200 rounded-full text-xs font-medium hover:from-orange-100 hover:to-red-100 transition-all duration-200 cursor-default transform hover:scale-105"
+                                            className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-medium border border-purple-200"
                                           >
                                             {tech}
                                           </span>
-                                        )
+                                        ))}
+                                      {experience.technologies.length > 6 && (
+                                        <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                                          +{experience.technologies.length - 6}{" "}
+                                          more
+                                        </span>
                                       )}
                                     </div>
                                   </div>
                                 )}
 
-                              {/* Experience metrics/achievements */}
+                              {/* Metrics */}
                               {experience.metrics &&
                                 experience.metrics.length > 0 && (
                                   <div className="border-t border-gray-100 pt-4">
-                                    <h6 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
-                                      <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                                      Key Metrics & Impact
-                                    </h6>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                      {experience.metrics.map((metric, i) => (
-                                        <div
-                                          key={i}
-                                          className="bg-green-50 border border-green-200 rounded-lg p-3 text-center"
-                                        >
-                                          <div className="text-lg font-bold text-green-700">
-                                            {metric.value}
+                                    <h5 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+                                      <span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
+                                      Impact & Results
+                                    </h5>
+                                    <div className="grid grid-cols-2 gap-3">
+                                      {experience.metrics
+                                        .slice(0, 4)
+                                        .map((metric, i) => (
+                                          <div
+                                            key={i}
+                                            className="bg-orange-50 border border-orange-200 rounded-lg p-3 text-center"
+                                          >
+                                            <div className="text-lg font-bold text-orange-700">
+                                              {metric.value}
+                                            </div>
+                                            <div className="text-xs text-orange-600">
+                                              {metric.label}
+                                            </div>
                                           </div>
-                                          <div className="text-xs text-green-600">
-                                            {metric.label}
-                                          </div>
-                                        </div>
-                                      ))}
+                                        ))}
                                     </div>
                                   </div>
                                 )}
                             </div>
                           </div>
                         </div>
-
-                        {/* Connecting line for better visual flow */}
-                        <div
-                          className={`hidden lg:block w-6 border-t-2 border-dashed border-blue-300 ${
-                            index % 2 === 0 ? "order-last" : "order-first"
-                          }`}
-                        ></div>
                       </div>
                     ))}
-                  </div>
-
-                  {/* Timeline end marker */}
-                  <div className="flex justify-center mt-16">
-                    <div className="w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-lg">
-                      <div className="w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-pulse"></div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -556,52 +551,53 @@ const Portfolio = () => {
           )}
 
           {/* Projects Section */}
-          <section
-            id="projects"
-            className="py-20 px-6 bg-gradient-to-br from-gray-50 via-white to-blue-50"
-          >
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-20">
-                <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
-                  Featured Projects
-                </h2>
-                <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-6 rounded-full"></div>
-              </div>
+          {portfolioData.projects && portfolioData.projects.length > 0 && (
+            <section
+              id="projects"
+              className="py-20 px-6 bg-gradient-to-br from-gray-50 via-white to-blue-50"
+            >
+              <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-20">
+                  <h2 className="text-4xl font-bold mb-6 text-gray-900">
+                    Featured Projects
+                  </h2>
+                  <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
+                </div>
 
-              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-10">
-                {portfolioData.projects.map((project, index) => (
-                  <div
-                    key={index}
-                    className="project-card relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
-                    style={{
-                      animationDelay: `${index * 100}ms`,
-                      animation: "slideUp 0.6s ease-out forwards",
-                    }}
-                  >
-                    {/* Project Image Container */}
-                    <div className="h-56 relative overflow-hidden rounded-t-2xl group">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      {project.imageURL ? (
-                        <img
-                          src={project.imageURL}
-                          alt={project.title}
-                          className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
-                          loading="lazy"
-                          onError={(e) => {
-                            e.target.style.display = "none";
-                            e.target.parentElement.classList.add(
-                              "bg-gradient-to-br",
-                              "from-blue-100",
-                              "via-purple-50",
-                              "to-indigo-100",
-                              "flex",
-                              "items-center",
-                              "justify-center"
-                            );
-                            const fallbackDiv = document.createElement("div");
-                            fallbackDiv.className =
-                              "flex flex-col items-center justify-center text-center p-8";
-                            fallbackDiv.innerHTML = `
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-10">
+                  {portfolioData.projects.map((project, index) => (
+                    <div
+                      key={index}
+                      className="project-card relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
+                      style={{
+                        animationDelay: `${index * 100}ms`,
+                        animation: "slideUp 0.6s ease-out forwards",
+                      }}
+                    >
+                      {/* Project Image Container */}
+                      <div className="h-56 relative overflow-hidden rounded-t-2xl group">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        {project.imageURL ? (
+                          <img
+                            src={project.imageURL}
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                            loading="lazy"
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              e.target.parentElement.classList.add(
+                                "bg-gradient-to-br",
+                                "from-blue-100",
+                                "via-purple-50",
+                                "to-indigo-100",
+                                "flex",
+                                "items-center",
+                                "justify-center"
+                              );
+                              const fallbackDiv = document.createElement("div");
+                              fallbackDiv.className =
+                                "flex flex-col items-center justify-center text-center p-8";
+                              fallbackDiv.innerHTML = `
                               <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                                 <svg class="text-white" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                   <polyline points="16,18 22,12 16,6"/>
@@ -610,172 +606,173 @@ const Portfolio = () => {
                               </div>
                               <p class="text-blue-600 font-medium text-sm">Project Preview</p>
                             `;
-                            e.target.parentElement.appendChild(fallbackDiv);
-                          }}
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-blue-100 via-purple-50 to-indigo-100 flex flex-col items-center justify-center">
-                          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                            <Code size={32} className="text-white" />
+                              e.target.parentElement.appendChild(fallbackDiv);
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-100 via-purple-50 to-indigo-100 flex flex-col items-center justify-center">
+                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                              <Code size={32} className="text-white" />
+                            </div>
+                            <p className="text-blue-600 font-medium text-sm">
+                              Project Preview
+                            </p>
                           </div>
-                          <p className="text-blue-600 font-medium text-sm">
-                            Project Preview
-                          </p>
-                        </div>
-                      )}
+                        )}
 
-                      {/* Floating Action Buttons */}
-                      <div className="absolute top-4 right-4 z-20 flex space-x-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                        <Link
-                          to={project.githubLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:text-blue-600 hover:bg-white transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
-                        >
-                          <FaGithub size={18} />
-                        </Link>
-                        {project.liveLink && (
+                        {/* Floating Action Buttons */}
+                        <div className="absolute top-4 right-4 z-20 flex space-x-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                           <Link
-                            to={project.liveLink || project.live}
+                            to={project.githubLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:text-green-600 hover:bg-white transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
+                            className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:text-blue-600 hover:bg-white transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
                           >
-                            <ExternalLink size={16} />
+                            <FaGithub size={18} />
                           </Link>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Project Content */}
-                    <div className="p-6 lg:p-7">
-                      <div className="mb-4">
-                        <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2 project-card:hover:text-blue-600 transition-colors duration-200">
-                          {project.title}
-                        </h3>
-                        <p className="text-gray-600 text-sm lg:text-base leading-relaxed line-clamp-3">
-                          {project.description}
-                        </p>
-                      </div>
-
-                      {/* Key Features */}
-                      {project.keyFeatures &&
-                        project.keyFeatures.length > 0 && (
-                          <div className="mb-4">
-                            <h4 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
-                              <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
-                              Key Features
-                            </h4>
-                            <ul className="space-y-1.5">
-                              {project.keyFeatures
-                                .slice(0, 3)
-                                .map((feature, i) => (
-                                  <li
-                                    key={i}
-                                    className="flex items-start text-sm text-gray-600"
-                                  >
-                                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                                    <span className="leading-relaxed">
-                                      {feature}
-                                    </span>
-                                  </li>
-                                ))}
-                              {project.keyFeatures.length > 3 && (
-                                <li className="text-xs text-blue-600 font-medium ml-3.5">
-                                  +{project.keyFeatures.length - 3} more
-                                  features
-                                </li>
-                              )}
-                            </ul>
-                          </div>
-                        )}
-
-                      {/* Tech Stack */}
-                      <div className="mb-6">
-                        <h4 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
-                          <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
-                          Tech Stack
-                        </h4>
-                        <div className="flex flex-wrap gap-2">
-                          {project.technologiesUsed
-                            .slice(0, 3)
-                            .map((tech, i) => (
-                              <span
-                                key={i}
-                                className="px-3 py-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200 rounded-full text-xs font-medium hover:from-blue-100 hover:to-indigo-100 transition-all duration-200 cursor-default"
-                              >
-                                {tech.name || tech}
-                              </span>
-                            ))}
-                          {project.technologiesUsed.length > 3 && (
-                            <div className="relative">
-                              <span className="px-3 py-1.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 border border-purple-200 rounded-full text-xs font-medium cursor-pointer hover:from-purple-100 hover:to-pink-100 transition-all duration-200 flex items-center space-x-1 tech-stack-group">
-                                <span>
-                                  +{project.technologiesUsed.length - 3}
-                                </span>
-
-                                {/* Tooltip for remaining tech stack */}
-                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 transition-opacity duration-200 pointer-events-none z-30 tooltip-content">
-                                  <div className="bg-gray-900 text-white px-3 py-2 rounded-lg text-xs whitespace-nowrap shadow-lg">
-                                    <div className="flex flex-wrap gap-1 max-w-48">
-                                      {project.technologiesUsed
-                                        .slice(3)
-                                        .map((tech, i) => (
-                                          <span
-                                            key={i}
-                                            className="bg-gray-700 px-2 py-1 rounded text-xs"
-                                          >
-                                            {tech.name || tech}
-                                          </span>
-                                        ))}
-                                    </div>
-                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                  </div>
-                                </div>
-                              </span>
-                            </div>
+                          {project.liveLink && (
+                            <Link
+                              to={project.liveLink || project.live}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:text-green-600 hover:bg-white transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
+                            >
+                              <ExternalLink size={16} />
+                            </Link>
                           )}
                         </div>
                       </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex space-x-3">
-                        <Link
-                          to={project.githubLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 bg-gray-900 text-white py-2.5 px-4 rounded-xl font-medium text-sm hover:bg-gray-800 transition-all duration-200 flex items-center justify-center space-x-2 group/btn"
-                        >
-                          <FaGithub
-                            size={16}
-                            className="group-hover/btn:scale-110 transition-transform duration-200"
-                          />
-                          <span>Code</span>
-                        </Link>
-                        {project.liveLink && (
+                      {/* Project Content */}
+                      <div className="p-6 lg:p-7">
+                        <div className="mb-4">
+                          <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2 project-card:hover:text-blue-600 transition-colors duration-200">
+                            {project.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm lg:text-base leading-relaxed line-clamp-3">
+                            {project.description}
+                          </p>
+                        </div>
+
+                        {/* Key Features */}
+                        {project.keyFeatures &&
+                          project.keyFeatures.length > 0 && (
+                            <div className="mb-4">
+                              <h4 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+                                <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
+                                Key Features
+                              </h4>
+                              <ul className="space-y-1.5">
+                                {project.keyFeatures
+                                  .slice(0, 3)
+                                  .map((feature, i) => (
+                                    <li
+                                      key={i}
+                                      className="flex items-start text-sm text-gray-600"
+                                    >
+                                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                      <span className="leading-relaxed">
+                                        {feature}
+                                      </span>
+                                    </li>
+                                  ))}
+                                {project.keyFeatures.length > 3 && (
+                                  <li className="text-xs text-blue-600 font-medium ml-3.5">
+                                    +{project.keyFeatures.length - 3} more
+                                    features
+                                  </li>
+                                )}
+                              </ul>
+                            </div>
+                          )}
+
+                        {/* Tech Stack */}
+                        <div className="mb-6">
+                          <h4 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+                            <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+                            Tech Stack
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {project.technologiesUsed
+                              .slice(0, 3)
+                              .map((tech, i) => (
+                                <span
+                                  key={i}
+                                  className="px-3 py-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200 rounded-full text-xs font-medium hover:from-blue-100 hover:to-indigo-100 transition-all duration-200 cursor-default"
+                                >
+                                  {tech.name || tech}
+                                </span>
+                              ))}
+                            {project.technologiesUsed.length > 3 && (
+                              <div className="relative">
+                                <span className="px-3 py-1.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 border border-purple-200 rounded-full text-xs font-medium cursor-pointer hover:from-purple-100 hover:to-pink-100 transition-all duration-200 flex items-center space-x-1 tech-stack-group">
+                                  <span>
+                                    +{project.technologiesUsed.length - 3}
+                                  </span>
+
+                                  {/* Tooltip for remaining tech stack */}
+                                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 transition-opacity duration-200 pointer-events-none z-30 tooltip-content">
+                                    <div className="bg-gray-900 text-white px-3 py-2 rounded-lg text-xs whitespace-nowrap shadow-lg">
+                                      <div className="flex flex-wrap gap-1 max-w-48">
+                                        {project.technologiesUsed
+                                          .slice(3)
+                                          .map((tech, i) => (
+                                            <span
+                                              key={i}
+                                              className="bg-gray-700 px-2 py-1 rounded text-xs"
+                                            >
+                                              {tech.name || tech}
+                                            </span>
+                                          ))}
+                                      </div>
+                                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                    </div>
+                                  </div>
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex space-x-3">
                           <Link
-                            to={project.liveLink || project.live}
+                            to={project.githubLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2.5 px-4 rounded-xl font-medium text-sm hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 group/btn shadow-lg hover:shadow-xl"
+                            className="flex-1 bg-gray-900 text-white py-2.5 px-4 rounded-xl font-medium text-sm hover:bg-gray-800 transition-all duration-200 flex items-center justify-center space-x-2 group/btn"
                           >
-                            <ExternalLink
-                              size={14}
+                            <FaGithub
+                              size={16}
                               className="group-hover/btn:scale-110 transition-transform duration-200"
                             />
-                            <span>Live Demo</span>
+                            <span>Code</span>
                           </Link>
-                        )}
+                          {project.liveLink && (
+                            <Link
+                              to={project.liveLink || project.live}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2.5 px-4 rounded-xl font-medium text-sm hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 group/btn shadow-lg hover:shadow-xl"
+                            >
+                              <ExternalLink
+                                size={14}
+                                className="group-hover/btn:scale-110 transition-transform duration-200"
+                              />
+                              <span>Live Demo</span>
+                            </Link>
+                          )}
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Decorative Elements */}
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600"></div>
-                  </div>
-                ))}
+                      {/* Decorative Elements */}
+                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600"></div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
 
           {/* Contact Section */}
           <section id="contact" className="py-20 px-6">

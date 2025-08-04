@@ -17,6 +17,13 @@ const Experience = ({ userData, onUpdate }) => {
   useEffect(() => {
     const originalExperience = userData?.experience || [];
 
+    // Helper function to compare responsibility arrays
+    const areResponsibilitiesEqual = (arr1, arr2) => {
+      if (!arr1 || !arr2) return arr1 === arr2;
+      if (arr1.length !== arr2.length) return false;
+      return arr1.every((item, index) => item === arr2[index]);
+    };
+
     // Check if the arrays are different in length or content
     const hasModifications =
       experience.length !== originalExperience.length ||
@@ -29,8 +36,10 @@ const Experience = ({ userData, onUpdate }) => {
           exp.position !== original.position ||
           exp.startDate !== original.startDate ||
           exp.endDate !== original.endDate ||
-          JSON.stringify(exp.responsibilities) !==
-            JSON.stringify(original.responsibilities)
+          !areResponsibilitiesEqual(
+            exp.responsibilities,
+            original.responsibilities
+          )
         );
       });
 
@@ -65,6 +74,14 @@ const Experience = ({ userData, onUpdate }) => {
         responsibilities: [""],
       },
     ]);
+
+    // Scroll to bottom after adding new experience
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 100);
   };
 
   const removeExperience = (index) => {
@@ -98,15 +115,24 @@ const Experience = ({ userData, onUpdate }) => {
 
   const addResponsibility = (experienceIndex) => {
     const updatedExperience = [...experience];
-    updatedExperience[experienceIndex].responsibilities.push("");
+    updatedExperience[experienceIndex] = {
+      ...updatedExperience[experienceIndex],
+      responsibilities: [
+        ...updatedExperience[experienceIndex].responsibilities,
+        "",
+      ],
+    };
     setExperience(updatedExperience);
   };
 
   const removeResponsibility = (experienceIndex, responsibilityIndex) => {
     const updatedExperience = [...experience];
-    updatedExperience[experienceIndex].responsibilities = updatedExperience[
-      experienceIndex
-    ].responsibilities.filter((_, i) => i !== responsibilityIndex);
+    updatedExperience[experienceIndex] = {
+      ...updatedExperience[experienceIndex],
+      responsibilities: updatedExperience[
+        experienceIndex
+      ].responsibilities.filter((_, i) => i !== responsibilityIndex),
+    };
     setExperience(updatedExperience);
   };
 
@@ -116,6 +142,12 @@ const Experience = ({ userData, onUpdate }) => {
     value
   ) => {
     const updatedExperience = [...experience];
+    updatedExperience[experienceIndex] = {
+      ...updatedExperience[experienceIndex],
+      responsibilities: [
+        ...updatedExperience[experienceIndex].responsibilities,
+      ],
+    };
     updatedExperience[experienceIndex].responsibilities[responsibilityIndex] =
       value;
     setExperience(updatedExperience);
@@ -183,7 +215,7 @@ const Experience = ({ userData, onUpdate }) => {
           <button
             type="button"
             onClick={addExperience}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2 cursor-pointer"
           >
             <svg
               className="w-5 h-5"
@@ -231,7 +263,7 @@ const Experience = ({ userData, onUpdate }) => {
             <button
               type="button"
               onClick={addExperience}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center space-x-2"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center space-x-2 cursor-pointer"
             >
               <svg
                 className="w-5 h-5"
@@ -287,7 +319,7 @@ const Experience = ({ userData, onUpdate }) => {
                     <button
                       type="button"
                       onClick={() => removeExperience(index)}
-                      className="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 p-3 rounded-xl transition-all duration-200 group"
+                      className="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 p-3 rounded-xl transition-all duration-200 group cursor-pointer"
                     >
                       <svg
                         className="w-5 h-5 group-hover:scale-110 transition-transform"
@@ -508,7 +540,7 @@ const Experience = ({ userData, onUpdate }) => {
                       <button
                         type="button"
                         onClick={() => addResponsibility(index)}
-                        className="bg-green-100 text-green-700 hover:bg-green-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2"
+                        className="bg-green-100 text-green-700 hover:bg-green-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 cursor-pointer"
                       >
                         <svg
                           className="w-4 h-4"
@@ -557,7 +589,7 @@ const Experience = ({ userData, onUpdate }) => {
                               onClick={() =>
                                 removeResponsibility(index, respIndex)
                               }
-                              className="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 p-2 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100 flex-shrink-0 mt-1"
+                              className="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 p-2 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100 flex-shrink-0 mt-1 cursor-pointer"
                             >
                               <svg
                                 className="w-5 h-5"
@@ -620,7 +652,7 @@ const Experience = ({ userData, onUpdate }) => {
               <button
                 type="submit"
                 disabled={loading || !hasChanges}
-                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center space-x-2"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center space-x-2 cursor-pointer"
               >
                 {loading ? (
                   <>

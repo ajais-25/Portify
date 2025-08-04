@@ -246,12 +246,16 @@ const updateUserSkillsAndResume = async (req, res) => {
 
         await user.save({ validateBeforeSave: false });
 
+        const newSkills = await User.findById(userId)
+            .populate("skills", "name")
+            .select("skills");
+
         return res.status(200).json({
             success: true,
             message: "User skills and resume updated successfully",
             data: {
-                skills: user.skills,
-                resume: user.resume,
+                skills: newSkills.skills,
+                resume,
             },
         });
     } catch (error) {

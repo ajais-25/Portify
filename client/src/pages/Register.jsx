@@ -128,7 +128,7 @@ const Register = () => {
         // Use the login function from auth context to automatically sign in the user
         login(token, data);
 
-        toast.success("Registration successful! Welcome to Portify!");
+        toast.success("Welcome to Portify!");
 
         // Redirect to dashboard
         navigate("/dashboard", { replace: true });

@@ -118,7 +118,9 @@ const Login = () => {
       // console.log(response.data);
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Invalid email or password");
+      toast.error(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }

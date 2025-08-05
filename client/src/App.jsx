@@ -10,6 +10,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   return (
@@ -41,6 +42,9 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* 404 Not Found - Catch all unmatched routes */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </BrowserRouter>

@@ -182,14 +182,14 @@ const Experience = ({ userData, onUpdate }) => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-        <div className="flex justify-between items-start">
-          <div className="flex items-center space-x-3">
-            <div className="bg-blue-100 p-3 rounded-lg">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 sm:p-6 border border-blue-100">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 flex-1">
+            <div className="bg-blue-100 p-2 sm:p-3 rounded-lg flex-shrink-0">
               <svg
-                className="w-6 h-6 text-blue-600"
+                className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -202,11 +202,11 @@ const Experience = ({ userData, onUpdate }) => {
                 />
               </svg>
             </div>
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                 Professional Experience
               </h2>
-              <p className="mt-2 text-gray-600 max-w-2xl">
+              <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">
                 Showcase your career journey and professional accomplishments to
                 highlight your expertise and growth.
               </p>
@@ -215,10 +215,10 @@ const Experience = ({ userData, onUpdate }) => {
           <button
             type="button"
             onClick={addExperience}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2 cursor-pointer"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2 cursor-pointer text-sm sm:text-base w-full sm:w-auto justify-center sm:justify-start"
           >
             <svg
-              className="w-5 h-5"
+              className="w-4 h-4 sm:w-5 sm:h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -235,12 +235,12 @@ const Experience = ({ userData, onUpdate }) => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
         {experience.length === 0 ? (
-          <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-dashed border-gray-300">
-            <div className="bg-gray-200 p-4 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+          <div className="text-center py-12 sm:py-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-dashed border-gray-300">
+            <div className="bg-gray-200 p-3 sm:p-4 rounded-full w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 flex items-center justify-center">
               <svg
-                className="w-10 h-10 text-gray-400"
+                className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -519,11 +519,11 @@ const Experience = ({ userData, onUpdate }) => {
                   </div>
 
                   {/* Responsibilities Section */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-lg font-semibold text-gray-800 flex items-center space-x-2">
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                      <h4 className="text-base sm:text-lg font-semibold text-gray-800 flex items-center space-x-2">
                         <svg
-                          className="w-5 h-5 text-blue-600"
+                          className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -540,10 +540,10 @@ const Experience = ({ userData, onUpdate }) => {
                       <button
                         type="button"
                         onClick={() => addResponsibility(index)}
-                        className="bg-green-100 text-green-700 hover:bg-green-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 cursor-pointer"
+                        className="bg-green-100 text-green-700 hover:bg-green-200 px-3 sm:px-4 py-2 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 flex items-center justify-center sm:justify-start space-x-2 cursor-pointer w-full sm:w-auto"
                       >
                         <svg
-                          className="w-4 h-4"
+                          className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -559,40 +559,42 @@ const Experience = ({ userData, onUpdate }) => {
                       </button>
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-3 sm:space-y-4">
                       {exp.responsibilities.map((responsibility, respIndex) => (
                         <div
                           key={respIndex}
-                          className="flex items-start space-x-3 group"
+                          className="flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-3 group bg-white p-3 sm:p-4 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200"
                         >
-                          <div className="bg-blue-100 p-2 rounded-lg mt-1 flex-shrink-0">
-                            <span className="text-blue-600 font-semibold text-sm">
-                              {respIndex + 1}
-                            </span>
+                          <div className="flex items-start space-x-3 w-full sm:w-auto">
+                            <div className="bg-blue-100 p-2 rounded-lg flex-shrink-0">
+                              <span className="text-blue-600 font-semibold text-xs sm:text-sm">
+                                {respIndex + 1}
+                              </span>
+                            </div>
+                            <textarea
+                              value={responsibility}
+                              onChange={(e) =>
+                                updateResponsibility(
+                                  index,
+                                  respIndex,
+                                  e.target.value
+                                )
+                              }
+                              placeholder="Describe your key responsibilities, achievements, or impact in this role..."
+                              rows={2}
+                              className="flex-1 border-2 border-gray-200 rounded-xl px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none text-sm sm:text-base min-h-[60px] sm:min-h-[auto]"
+                            />
                           </div>
-                          <textarea
-                            value={responsibility}
-                            onChange={(e) =>
-                              updateResponsibility(
-                                index,
-                                respIndex,
-                                e.target.value
-                              )
-                            }
-                            placeholder="Describe your key responsibilities, achievements, or impact in this role..."
-                            rows={2}
-                            className="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
-                          />
                           {exp.responsibilities.length > 1 && (
                             <button
                               type="button"
                               onClick={() =>
                                 removeResponsibility(index, respIndex)
                               }
-                              className="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 p-2 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100 flex-shrink-0 mt-1 cursor-pointer"
+                              className="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 p-2 rounded-lg transition-all duration-200 sm:opacity-0 sm:group-hover:opacity-100 flex-shrink-0 self-start sm:mt-1 cursor-pointer w-full sm:w-auto justify-center sm:justify-start flex items-center space-x-2 sm:space-x-0"
                             >
                               <svg
-                                className="w-5 h-5"
+                                className="w-4 h-4 sm:w-5 sm:h-5"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -604,6 +606,7 @@ const Experience = ({ userData, onUpdate }) => {
                                   d="M6 18L18 6M6 6l12 12"
                                 />
                               </svg>
+                              <span className="sm:hidden text-sm">Remove</span>
                             </button>
                           )}
                         </div>
@@ -618,12 +621,12 @@ const Experience = ({ userData, onUpdate }) => {
 
         {/* Save Section */}
         {(experience.length > 0 || hasChanges) && (
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="bg-blue-100 p-2 rounded-lg">
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 sm:p-6 border border-blue-100 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 flex-1">
+                <div className="bg-blue-100 p-2 sm:p-2 rounded-lg flex-shrink-0">
                   <svg
-                    className="w-5 h-5 text-blue-600"
+                    className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -636,13 +639,13 @@ const Experience = ({ userData, onUpdate }) => {
                     />
                   </svg>
                 </div>
-                <div>
-                  <p className="font-medium text-gray-900">
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-gray-900 text-sm sm:text-base">
                     {hasChanges
                       ? "You have unsaved changes"
                       : "All changes saved"}
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
                     {hasChanges
                       ? "Click save to update your experience information"
                       : "Your experience section is up to date"}
@@ -652,12 +655,12 @@ const Experience = ({ userData, onUpdate }) => {
               <button
                 type="submit"
                 disabled={loading || !hasChanges}
-                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center space-x-2 cursor-pointer"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center sm:justify-start space-x-2 cursor-pointer text-sm sm:text-base w-full sm:w-auto"
               >
                 {loading ? (
                   <>
                     <svg
-                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+                      className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5 text-white"
                       fill="none"
                       viewBox="0 0 24 24"
                     >
@@ -680,7 +683,7 @@ const Experience = ({ userData, onUpdate }) => {
                 ) : (
                   <>
                     <svg
-                      className="w-5 h-5"
+                      className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

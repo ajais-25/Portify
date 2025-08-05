@@ -54,11 +54,11 @@ const About = ({ userData, onUpdate }) => {
   return (
     <div className="space-y-8">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-        <div className="flex items-center space-x-3">
-          <div className="bg-blue-100 p-3 rounded-lg">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 sm:p-6 border border-blue-100">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
+          <div className="bg-blue-100 p-2 sm:p-3 rounded-lg flex-shrink-0">
             <svg
-              className="w-6 h-6 text-blue-600"
+              className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -71,9 +71,11 @@ const About = ({ userData, onUpdate }) => {
               />
             </svg>
           </div>
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900">About Me</h2>
-            <p className="mt-2 text-gray-600 max-w-2xl">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              About Me
+            </h2>
+            <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">
               Share your story and let the world know who you are
             </p>
           </div>
@@ -81,10 +83,10 @@ const About = ({ userData, onUpdate }) => {
       </div>
 
       {/* Tips Section */}
-      <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-        <div className="flex items-start gap-3">
+      <div className="mb-6 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="flex items-start gap-2 sm:gap-3">
           <svg
-            className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"
+            className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mt-0.5 flex-shrink-0"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -96,11 +98,11 @@ const About = ({ userData, onUpdate }) => {
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <div>
-            <h4 className="text-sm font-medium text-blue-800 mb-1">
+          <div className="min-w-0 flex-1">
+            <h4 className="text-xs sm:text-sm font-medium text-blue-800 mb-1">
               Tips for a great About section:
             </h4>
-            <ul className="text-xs text-blue-700 space-y-1">
+            <ul className="text-xs text-blue-700 space-y-0.5 sm:space-y-1">
               <li>• Keep your tagline concise and impactful</li>
               <li>• Share your passion and what motivates you</li>
               <li>• Mention your key skills and experience</li>
@@ -112,21 +114,24 @@ const About = ({ userData, onUpdate }) => {
 
       {/* Form Section */}
       <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-        <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-800">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-b border-gray-200">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800">
             Edit Information
           </h3>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="p-4 sm:p-6 space-y-4 sm:space-y-6"
+        >
           {/* Tagline Field */}
           <div className="space-y-2">
             <label
               htmlFor="tagline"
-              className="flex items-center gap-2 text-sm font-medium text-gray-700"
+              className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-700"
             >
               <svg
-                className="w-4 h-4 text-gray-500"
+                className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 flex-shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -149,7 +154,7 @@ const About = ({ userData, onUpdate }) => {
                 value={formData.tagline}
                 onChange={handleChange}
                 placeholder="e.g., Full Stack Developer • UI/UX Designer • Problem Solver"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400 bg-gray-50 focus:bg-white"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400 bg-gray-50 focus:bg-white"
                 required
               />
             </div>
@@ -162,10 +167,10 @@ const About = ({ userData, onUpdate }) => {
           <div className="space-y-2">
             <label
               htmlFor="description"
-              className="flex items-center gap-2 text-sm font-medium text-gray-700"
+              className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-700"
             >
               <svg
-                className="w-4 h-4 text-gray-500"
+                className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 flex-shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -184,11 +189,11 @@ const About = ({ userData, onUpdate }) => {
               <textarea
                 name="description"
                 id="description"
-                rows={6}
+                rows={4}
                 value={formData.description}
                 onChange={handleChange}
                 placeholder="Tell your story... What drives you? What are your passions? What makes you unique as a professional?"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400 bg-gray-50 focus:bg-white resize-none"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400 bg-gray-50 focus:bg-white resize-none"
                 required
               />
             </div>
@@ -198,16 +203,16 @@ const About = ({ userData, onUpdate }) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-            <div className="flex items-center gap-2 text-sm text-gray-500">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t border-gray-200 gap-3 sm:gap-0">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500">
               {hasChanges && (
                 <>
-                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse flex-shrink-0"></div>
                   <span>You have unsaved changes</span>
                 </>
               )}
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
               {hasChanges && (
                 <button
                   type="button"
@@ -217,7 +222,7 @@ const About = ({ userData, onUpdate }) => {
                       description: userData?.description || "",
                     });
                   }}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+                  className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer w-full sm:w-auto text-center font-medium"
                 >
                   Reset
                 </button>
@@ -225,17 +230,17 @@ const About = ({ userData, onUpdate }) => {
               <button
                 type="submit"
                 disabled={loading || !hasChanges}
-                className="relative px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-blue-600 disabled:hover:to-purple-600 font-medium cursor-pointer"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none font-medium cursor-pointer text-xs sm:text-sm w-full sm:w-auto"
               >
                 {loading ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     Saving...
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center gap-2">
                     <svg
-                      className="w-4 h-4"
+                      className="w-3 h-3 sm:w-4 sm:h-4"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

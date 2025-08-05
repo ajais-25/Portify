@@ -159,13 +159,13 @@ const SkillsResume = ({ userData, onUpdate }) => {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 bg-blue-100 rounded-lg">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-xl border border-blue-100">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
+          <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
             <svg
-              className="w-6 h-6 text-blue-600"
+              className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -178,24 +178,24 @@ const SkillsResume = ({ userData, onUpdate }) => {
               />
             </svg>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
               Skills & Resume
             </h2>
-            <p className="mt-1 text-sm text-blue-600">
+            <p className="mt-1 text-xs sm:text-sm text-blue-600">
               Showcase your technical expertise and share your resume
             </p>
           </div>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
         {/* Skills Section */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-green-100 rounded-lg">
+        <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 mb-4 sm:mb-6">
+            <div className="p-2 bg-green-100 rounded-lg flex-shrink-0">
               <svg
-                className="w-5 h-5 text-green-600"
+                className="w-4 h-4 sm:w-5 sm:h-5 text-green-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -570,40 +570,13 @@ const SkillsResume = ({ userData, onUpdate }) => {
           </div>
         </div>
 
-        {/* Save Button */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={loading || !hasChanges}
-            className="group flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg shadow-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-blue-600 disabled:hover:to-indigo-600 cursor-pointer"
-          >
-            {loading ? (
-              <>
+        {/* Save Section */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 sm:p-6 border border-blue-100 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 flex-1">
+              <div className="bg-blue-100 p-2 sm:p-2 rounded-lg flex-shrink-0">
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Saving Changes...
-              </>
-            ) : (
-              <>
-                <svg
-                  className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -615,10 +588,68 @@ const SkillsResume = ({ userData, onUpdate }) => {
                     d="M5 13l4 4L19 7"
                   />
                 </svg>
-                Save Changes
-              </>
-            )}
-          </button>
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-medium text-gray-900 text-sm sm:text-base">
+                  {hasChanges
+                    ? "You have unsaved changes"
+                    : "All changes saved"}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                  {hasChanges
+                    ? "Click save to update your skills and resume information"
+                    : "Your skills and resume section is up to date"}
+                </p>
+              </div>
+            </div>
+            <button
+              type="submit"
+              disabled={loading || !hasChanges}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center sm:justify-start space-x-2 cursor-pointer text-sm sm:text-base w-full sm:w-auto"
+            >
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="w-4 h-4 sm:w-5 sm:h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>Save Changes</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </form>
     </div>

@@ -336,13 +336,13 @@ const Projects = ({ userData, onUpdate }) => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
         <div className="flex-1">
           <div className="flex items-center mb-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mr-2 sm:mr-3 flex-shrink-0">
               <svg
-                className="w-5 h-5 text-white"
+                className="w-3 h-3 sm:w-5 sm:h-5 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -355,16 +355,18 @@ const Projects = ({ userData, onUpdate }) => {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900">Projects</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Projects
+            </h2>
           </div>
-          <p className="text-gray-600 leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
             Showcase your work and accomplishments. Add projects that
             demonstrate your skills and expertise.
           </p>
           {userData?.projects && userData.projects.length > 0 && (
-            <div className="mt-3 flex items-center text-sm text-gray-500">
+            <div className="mt-2 sm:mt-3 flex items-center text-xs sm:text-sm text-gray-500">
               <svg
-                className="w-4 h-4 mr-1"
+                className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -383,10 +385,10 @@ const Projects = ({ userData, onUpdate }) => {
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 cursor-pointer"
+          className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 cursor-pointer text-sm sm:text-base w-full sm:w-auto justify-center sm:justify-start"
         >
           <svg
-            className="w-5 h-5 mr-2"
+            className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -406,7 +408,7 @@ const Projects = ({ userData, onUpdate }) => {
       {showForm && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm h-[100vh] flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 rounded-t-2xl">
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 rounded-t-2xl z-20">
               <div className="flex justify-between items-center">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900">

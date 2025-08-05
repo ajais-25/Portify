@@ -15,7 +15,7 @@ const Home = () => {
     if (user) {
       navigate("/dashboard");
     } else {
-      navigate("/login");
+      navigate("/register");
     }
   };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import api from "../api";
 import { useAuth } from "../contexts/AuthContext";
@@ -14,15 +14,25 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, isAuthenticated, loading: authLoading } = useAuth();
+  const hasRedirected = useRef(false);
 
-  // Get the intended destination from location state, default to home
-  const from = location.state?.from?.pathname || "/";
+  // Get the intended destination from location state, default to dashboard
+  const from = location.state?.from?.pathname || "/dashboard";
+
   // Redirect if user is already authenticated
   useEffect(() => {
-    if (!authLoading && isAuthenticated) {
-      navigate("/", { replace: true });
+    if (!authLoading && isAuthenticated && !hasRedirected.current) {
+      hasRedirected.current = true;
+      navigate(from, { replace: true });
     }
-  }, [isAuthenticated, authLoading, navigate]);
+  }, [isAuthenticated, authLoading, from, navigate]);
+
+  // Reset redirect flag when component mounts or auth state changes
+  useEffect(() => {
+    if (authLoading) {
+      hasRedirected.current = false;
+    }
+  }, [authLoading]);
 
   // Show loading while checking authentication status
   if (authLoading) {
@@ -108,8 +118,11 @@ const Login = () => {
 
         toast.success("Logged in successfully!");
 
-        // Redirect to the intended page or home
-        navigate(from, { replace: true });
+        // Redirect to the intended page or dashboard
+        if (!hasRedirected.current) {
+          hasRedirected.current = true;
+          navigate(from, { replace: true });
+        }
       } else {
         toast.error(response.data.message || "Login failed");
         return;
@@ -147,8 +160,11 @@ const Login = () => {
 
         toast.success("Demo login successful!");
 
-        // Redirect to the intended page or home
-        navigate(from, { replace: true });
+        // Redirect to the intended page or dashboard
+        if (!hasRedirected.current) {
+          hasRedirected.current = true;
+          navigate(from, { replace: true });
+        }
       } else {
         toast.error(response.data.message || "Demo login failed");
       }

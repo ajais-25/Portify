@@ -68,23 +68,20 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-white shadow-lg border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+          <div className="flex justify-between items-center py-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Portify Dashboard
+              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+                Dashboard
               </h1>
-              <p className="mt-1 text-sm text-gray-500">
-                Manage your portfolio information
-              </p>
             </div>
             <div className="flex items-center gap-3">
               <button
                 onClick={() =>
                   window.open(`/portfolio/${user?.username}`, "_blank")
                 }
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 shadow-sm cursor-pointer"
+                className="inline-flex items-center px-4 py-2 border border-blue-500 text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -103,7 +100,7 @@ const Dashboard = () => {
               </button>
               <button
                 onClick={handleLogout}
-                className="inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 shadow-sm cursor-pointer"
+                className="inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium rounded-lg text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
               >
                 <svg
                   className="w-4 h-4 mr-2"

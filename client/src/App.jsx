@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -23,8 +24,8 @@ function App() {
             }
           >
             <Routes>
-              {/* Redirect root to dashboard */}
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              {/* Home route */}
+              <Route path="/" element={<Home />} />
 
               {/* Public routes */}
               <Route path="/login" element={<Login />} />

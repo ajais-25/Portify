@@ -800,21 +800,16 @@ const Portfolio = () => {
                 projects. Let's discuss how we can bring your ideas to life.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <button
-                  onClick={() =>
-                    window.open(
-                      `https://mail.google.com/mail/?view=cm&fs=1&to=${
-                        portfolioData.email
-                      }&su=Portfolio Inquiry&body=Hello ${
-                        portfolioData.name.split(" ")[0]
-                      }, I found your portfolio and would like to discuss...`,
-                      "_blank"
-                    )
-                  }
-                  className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
+                <a
+                  href={`mailto:${
+                    portfolioData.email
+                  }?subject=Portfolio Inquiry&body=Hello ${
+                    portfolioData.name.split(" ")[0]
+                  }, I found your portfolio and would like to discuss...`}
+                  className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer text-center"
                 >
                   Send me an email
-                </button>
+                </a>
                 <Link
                   to={portfolioData.resume}
                   target="_blank"
@@ -870,21 +865,16 @@ const Portfolio = () => {
                     <Globe size={26} />
                   </Link>
                 )}
-                <button
-                  onClick={() =>
-                    window.open(
-                      `https://mail.google.com/mail/?view=cm&fs=1&to=${
-                        portfolioData.email
-                      }&su=Portfolio Inquiry&body=Hello ${
-                        portfolioData.name.split(" ")[0]
-                      }, I found your portfolio and would like to discuss...`,
-                      "_blank"
-                    )
-                  }
-                  className="text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer bg-transparent border-none p-0"
+                <a
+                  href={`mailto:${
+                    portfolioData.email
+                  }?subject=Portfolio Inquiry&body=Hello ${
+                    portfolioData.name.split(" ")[0]
+                  }, I found your portfolio and would like to discuss...`}
+                  className="text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer"
                 >
                   <Mail size={26} />
-                </button>
+                </a>
               </div>
               <p className="text-gray-400">© 2025 {portfolioData.name}</p>
             </div>

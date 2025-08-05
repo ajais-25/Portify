@@ -267,7 +267,7 @@ const SkillsResume = ({ userData, onUpdate }) => {
                       <button
                         type="button"
                         onClick={() => removeSkill(tech._id)}
-                        className="opacity-0 group-hover:opacity-100 flex items-center justify-center w-6 h-6 rounded-full bg-red-100 hover:bg-red-200 text-red-600 transition-all duration-200 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-red-300 cursor-pointer"
+                        className="flex items-center justify-center w-6 h-6 rounded-full bg-red-100 hover:bg-red-200 text-red-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-300 cursor-pointer"
                         title="Remove skill"
                       >
                         <svg

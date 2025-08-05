@@ -876,12 +876,12 @@ const Projects = ({ userData, onUpdate }) => {
             className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
           >
             {/* Project Image */}
-            <div className="relative overflow-hidden h-56">
+            <div className="relative overflow-hidden h-56 bg-gray-50">
               {project.imageURL ? (
                 <img
                   src={project.imageURL}
                   alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
                 />
               ) : (

@@ -575,13 +575,13 @@ const Portfolio = () => {
                       }}
                     >
                       {/* Project Image Container */}
-                      <div className="h-56 relative overflow-hidden rounded-t-2xl group">
+                      <div className="h-56 relative overflow-hidden rounded-t-2xl group bg-gray-50">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         {project.imageURL ? (
                           <img
                             src={project.imageURL}
                             alt={project.title}
-                            className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                            className="w-full h-full object-contain transition-all duration-500 group-hover:scale-110"
                             loading="lazy"
                             onError={(e) => {
                               e.target.style.display = "none";

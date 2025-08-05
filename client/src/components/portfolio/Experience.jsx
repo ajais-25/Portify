@@ -311,9 +311,6 @@ const Experience = ({ userData, onUpdate }) => {
                         <h3 className="text-xl font-bold text-gray-900">
                           Experience #{index + 1}
                         </h3>
-                        <p className="text-sm text-gray-500 mt-1">
-                          Complete your professional details
-                        </p>
                       </div>
                     </div>
                     <button
@@ -563,9 +560,9 @@ const Experience = ({ userData, onUpdate }) => {
                       {exp.responsibilities.map((responsibility, respIndex) => (
                         <div
                           key={respIndex}
-                          className="flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-3 group bg-white p-3 sm:p-4 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200"
+                          className="bg-white p-3 sm:p-4 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200"
                         >
-                          <div className="flex items-start space-x-3 w-full sm:w-auto">
+                          <div className="flex items-start space-x-3 sm:space-x-3">
                             <div className="bg-blue-100 p-2 rounded-lg flex-shrink-0">
                               <span className="text-blue-600 font-semibold text-xs sm:text-sm">
                                 {respIndex + 1}
@@ -581,33 +578,58 @@ const Experience = ({ userData, onUpdate }) => {
                                 )
                               }
                               placeholder="Describe your key responsibilities, achievements, or impact in this role..."
-                              rows={2}
-                              className="flex-1 border-2 border-gray-200 rounded-xl px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none text-sm sm:text-base min-h-[60px] sm:min-h-[auto]"
+                              rows={3}
+                              className="flex-1 border-2 border-gray-200 rounded-xl px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none text-sm sm:text-base"
                             />
+                            {exp.responsibilities.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  removeResponsibility(index, respIndex)
+                                }
+                                className="hidden sm:block bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 p-2 rounded-lg transition-all duration-200 flex-shrink-0 cursor-pointer"
+                              >
+                                <svg
+                                  className="w-4 h-4 sm:w-5 sm:h-5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+                            )}
                           </div>
                           {exp.responsibilities.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() =>
-                                removeResponsibility(index, respIndex)
-                              }
-                              className="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 p-2 rounded-lg transition-all duration-200 sm:opacity-0 sm:group-hover:opacity-100 flex-shrink-0 self-start sm:mt-1 cursor-pointer w-full sm:w-auto justify-center sm:justify-start flex items-center space-x-2 sm:space-x-0"
-                            >
-                              <svg
-                                className="w-4 h-4 sm:w-5 sm:h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                            <div className="sm:hidden mt-3 flex justify-end">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  removeResponsibility(index, respIndex)
+                                }
+                                className="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer flex items-center space-x-2 text-sm"
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M6 18L18 6M6 6l12 12"
-                                />
-                              </svg>
-                              <span className="sm:hidden text-sm">Remove</span>
-                            </button>
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                                <span>Remove</span>
+                              </button>
+                            </div>
                           )}
                         </div>
                       ))}

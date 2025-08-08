@@ -1,3 +1,4 @@
+import { BlacklistToken } from "../models/blacklistToken.model.js";
 import { User } from "../models/user.model.js";
 
 const register = async (req, res) => {
@@ -118,14 +119,30 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
+        const token =
+            req.cookies?.token ||
+            req.header("Authorization")?.replace("Bearer ", "");
+
+        if (!token) {
+            return res.status(400).json({
+                success: false,
+                message: "No token found",
+            });
+        }
+
         const options = {
             httpOnly: true,
             secure: true,
         };
 
-        res.status(200)
-            .clearCookie("token", options)
-            .json({ success: true, message: "User logged out successfully" });
+        res.clearCookie("token", options);
+
+        await BlacklistToken.create({ token });
+
+        res.status(200).json({
+            success: true,
+            message: "User logged out successfully",
+        });
     } catch (error) {
         res.status(500).json({
             success: false,

@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
+import { BlacklistToken } from "../models/blacklistToken.model.js";
 
 const verifyUser = async (req, res, next) => {
     try {
@@ -8,6 +9,15 @@ const verifyUser = async (req, res, next) => {
             req.header("Authorization")?.replace("Bearer ", "");
 
         if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized request",
+            });
+        }
+
+        const isBlacklisted = await BlacklistToken.findOne({ token });
+
+        if (isBlacklisted) {
             return res.status(401).json({
                 success: false,
                 message: "Unauthorized request",

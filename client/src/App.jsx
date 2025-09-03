@@ -50,7 +50,7 @@ function App() {
         </BrowserRouter>
         <ToastContainer
           position="top-center"
-          autoClose={3000}
+          autoClose={4000}
           hideProgressBar={false}
           newestOnTop={true}
           closeOnClick
@@ -63,6 +63,7 @@ function App() {
           toastClassName="toast-custom"
           bodyClassName="toast-body"
           progressClassName="toast-progress"
+          limit={3}
         />
       </AuthProvider>
     </>

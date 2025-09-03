@@ -46,6 +46,7 @@ const register = async (req, res) => {
         const options = {
             httpOnly: true,
             secure: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         };
 
         return res
@@ -60,7 +61,6 @@ const register = async (req, res) => {
                     username: user.username,
                     role: user.role,
                 },
-                token,
                 message: "User registered successfully",
             });
     } catch (error) {
@@ -101,12 +101,12 @@ const login = async (req, res) => {
         const options = {
             httpOnly: true,
             secure: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         };
 
         res.status(200).cookie("token", token, options).json({
             success: true,
             data: loggedInUser,
-            token,
             message: "User logged in successfully",
         });
     } catch (error) {

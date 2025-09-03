@@ -110,11 +110,11 @@ const Login = () => {
       const response = await api.post("/users/login", formData);
 
       if (response.data.success === true) {
-        // Extract token and user data from response
-        const { token, data } = response.data || {};
+        // Extract user data from response
+        const { data } = response.data || {};
 
         // Use the login function from auth context
-        login(token, data);
+        login(data);
 
         toast.success("Logged in successfully!");
 
@@ -152,11 +152,11 @@ const Login = () => {
       const response = await api.post("/users/login", demoCredentials);
 
       if (response.data.success === true) {
-        // Extract token and user data from response
-        const { token, data } = response.data || {};
+        // Extract user data from response
+        const { data } = response.data || {};
 
         // Use the login function from auth context
-        login(token, data);
+        login(data);
 
         toast.success("Demo login successful!");
 

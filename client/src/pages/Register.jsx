@@ -122,11 +122,11 @@ const Register = () => {
       const response = await api.post("/users/register", registrationData);
 
       if (response.data.success === true) {
-        // Extract token and user data from response
-        const { token, data } = response.data || {};
+        // Extract user data from response
+        const { data } = response.data || {};
 
         // Use the login function from auth context to automatically sign in the user
-        login(token, data);
+        login(data);
 
         toast.success("Welcome to Portify!");
 

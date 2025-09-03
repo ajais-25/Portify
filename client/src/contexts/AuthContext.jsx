@@ -23,27 +23,22 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      // Check if user has a valid token in localStorage or sessionStorage
-      const token = localStorage.getItem("authToken");
+      // Check if user is authenticated by making a request to the profile endpoint
+      // The cookie will be automatically included with withCredentials: true
+      // Skip auto-redirect for this auth check request
+      const response = await api.get("/users/profile", {
+        skipAuthRedirect: true,
+      });
 
-      if (token) {
-        // Verify the token is still valid and fetch user data
-        const response = await api.get("/users/profile");
-
-        if (response.data.success) {
-          setIsAuthenticated(true);
-          setUser(response.data.data);
-        } else {
-          // Token is invalid, clear it
-          localStorage.removeItem("authToken");
-          setIsAuthenticated(false);
-          setUser(null);
-        }
+      if (response.data.success) {
+        setIsAuthenticated(true);
+        setUser(response.data.data);
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
       }
     } catch (error) {
       console.error("Error checking auth status:", error);
-      // Clear invalid token
-      localStorage.removeItem("authToken");
       setIsAuthenticated(false);
       setUser(null);
     } finally {
@@ -51,16 +46,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = (token, userData) => {
-    localStorage.setItem("authToken", token);
+  const login = (userData) => {
+    // No need to store token in localStorage as it's now in HTTP-only cookies
     setIsAuthenticated(true);
     setUser(userData);
   };
 
-  const logout = () => {
-    localStorage.removeItem("authToken");
-    setIsAuthenticated(false);
-    setUser(null);
+  const logout = async () => {
+    try {
+      // Call logout endpoint to clear the HTTP-only cookie
+      await api.post("/users/logout");
+    } catch (error) {
+      console.error("Error during logout:", error);
+    } finally {
+      setIsAuthenticated(false);
+      setUser(null);
+    }
   };
 
   const value = {

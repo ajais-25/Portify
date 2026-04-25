@@ -21,11 +21,13 @@ import userRoutes from "./routes/user.routes.js";
 import technologyRoutes from "./routes/technology.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import portfolioRoutes from "./routes/portfolio.routes.js";
+import aiRoutes from "./routes/ai.routes.js";
 
 // Routes declaration
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/technologies", technologyRoutes);
 app.use("/api/v1/project", projectRoutes);
 app.use("/api/v1/portfolio", portfolioRoutes);
+app.use("/api/v1/ai", aiRoutes);
 
 export default app;

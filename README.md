@@ -65,6 +65,8 @@
    MONGODB_URI=YOUR_MONGO_URI
    JWT_SECRET=your_jwt_secret_key
    JWT_EXPIRY=7d
+   GEMINI_API_KEY=your_google_ai_studio_key
+   GEMINI_MODEL=gemini-1.5-flash
    ```
 
 5. **Start the development servers**

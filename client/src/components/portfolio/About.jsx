@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../../api";
 import { toast } from "react-toastify";
+import { streamSSE } from "../../utils/streamingApi";
 
 const About = ({ userData, onUpdate }) => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,11 @@ const About = ({ userData, onUpdate }) => {
   });
   const [loading, setLoading] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiFormData, setAiFormData] = useState({
+    targetRole: "",
+  });
+  const [abortController, setAbortController] = useState(null);
 
   // Track changes when userData is updated
   useEffect(() => {
@@ -34,6 +40,92 @@ const About = ({ userData, onUpdate }) => {
     });
   };
 
+  const handleAiInputChange = (e) => {
+    setAiFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleGenerateDescription = async () => {
+    if (!aiFormData.targetRole.trim()) {
+      toast.error("Please enter your target role");
+      return;
+    }
+
+    const controller = new AbortController();
+    setAbortController(controller);
+    setAiLoading(true);
+
+    let streamedText = "";
+
+    setFormData((prev) => ({
+      ...prev,
+      description: "",
+    }));
+
+    try {
+      await streamSSE({
+        endpoint: "/ai/about-description/stream",
+        body: {
+          targetRole: aiFormData.targetRole,
+          draftOverrides: {
+            tagline: formData.tagline,
+            description: formData.description,
+          },
+        },
+        signal: controller.signal,
+        onEvent: ({ event, data }) => {
+          if (event === "chunk") {
+            const chunkText = data?.text || "";
+            streamedText += chunkText;
+
+            setFormData((prev) => ({
+              ...prev,
+              description: streamedText,
+            }));
+            return;
+          }
+
+          if (event === "done") {
+            const finalText = data?.text || streamedText;
+
+            setFormData((prev) => ({
+              ...prev,
+              description: finalText,
+            }));
+            return;
+          }
+
+          if (event === "error") {
+            throw new Error(data?.message || "Failed to generate description");
+          }
+        },
+      });
+
+      if (streamedText.trim()) {
+        toast.success("AI description generated");
+      } else {
+        toast.error("No description was generated");
+      }
+    } catch (error) {
+      if (error.name === "AbortError") {
+        toast.info("Generation cancelled");
+      } else {
+        toast.error(error.message || "Failed to generate description");
+      }
+    } finally {
+      setAiLoading(false);
+      setAbortController(null);
+    }
+  };
+
+  const handleCancelGeneration = () => {
+    if (abortController) {
+      abortController.abort();
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -44,7 +136,7 @@ const About = ({ userData, onUpdate }) => {
       toast.success("About section updated successfully!");
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Error updating about section"
+        error.response?.data?.message || "Error updating about section",
       );
     } finally {
       setLoading(false);
@@ -163,6 +255,62 @@ const About = ({ userData, onUpdate }) => {
             </p>
           </div>
 
+          <div className="p-4 rounded-lg border border-blue-200 bg-blue-50 space-y-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h4 className="text-sm sm:text-base font-semibold text-blue-900">
+                  AI Description Assistant
+                </h4>
+                <p className="text-xs sm:text-sm text-blue-700 mt-1">
+                  Provide target role. Years of experience and tone are derived
+                  automatically from your Experience section.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs sm:text-sm font-medium text-blue-900">
+                  Target Role
+                </label>
+                <input
+                  type="text"
+                  name="targetRole"
+                  value={aiFormData.targetRole}
+                  onChange={handleAiInputChange}
+                  placeholder="e.g., Frontend Developer"
+                  className="w-full px-3 py-2 text-sm border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  disabled={aiLoading}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <button
+                type="button"
+                onClick={handleGenerateDescription}
+                disabled={aiLoading}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 text-sm rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed font-medium"
+              >
+                {aiLoading ? "Generating..." : "Generate with AI"}
+              </button>
+
+              {aiLoading && (
+                <button
+                  type="button"
+                  onClick={handleCancelGeneration}
+                  className="bg-white border border-red-300 text-red-600 px-4 py-2 text-sm rounded-lg hover:bg-red-50 transition-colors"
+                >
+                  Cancel
+                </button>
+              )}
+
+              <p className="text-xs text-blue-700 sm:ml-2">
+                Uses your saved skills, projects, and profile details.
+              </p>
+            </div>
+          </div>
+
           {/* Description Field */}
           <div className="space-y-2">
             <label
@@ -192,8 +340,9 @@ const About = ({ userData, onUpdate }) => {
                 rows={4}
                 value={formData.description}
                 onChange={handleChange}
+                disabled={aiLoading}
                 placeholder="Tell your story... What drives you? What are your passions? What makes you unique as a professional?"
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400 bg-gray-50 focus:bg-white resize-none"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400 bg-gray-50 focus:bg-white resize-none disabled:opacity-60 disabled:cursor-not-allowed"
                 required
               />
             </div>
@@ -222,14 +371,15 @@ const About = ({ userData, onUpdate }) => {
                       description: userData?.description || "",
                     });
                   }}
-                  className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer w-full sm:w-auto text-center font-medium"
+                  disabled={aiLoading}
+                  className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer w-full sm:w-auto text-center font-medium disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   Reset
                 </button>
               )}
               <button
                 type="submit"
-                disabled={loading || !hasChanges}
+                disabled={loading || aiLoading || !hasChanges}
                 className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none font-medium cursor-pointer text-xs sm:text-sm w-full sm:w-auto"
               >
                 {loading ? (
